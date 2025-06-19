@@ -1,0 +1,194 @@
+@extends('employee.layouts.master')
+@section('title', 'Store Details')
+@section('content')
+<main class="container-fluid px-0">
+    <div class="content-wrapper">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="bg-light rounded-3 px-3 py-2 mb-4">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{{ route('employee.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('employee.store.index') }}">Stores</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('employee.coupon.index') }}">Coupons</a></li>
+                <li class="breadcrumb-item active text-primary" aria-current="page">{{ $store->name }}</li>
+            </ol>
+        </nav>
+
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row align-items-center mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">
+                            <i class="fas fa-tags"></i> Coupons
+                            <small class="d-block text-muted mt-1" style="font-size: 0.8rem;">
+                                <strong>Store:</strong> {{ $store->name }}
+                            </small>
+                        </h1>
+                    </div>
+                    <div class="col-sm-6 d-flex justify-content-end">
+                        <a href="{{ route('employee.coupon.create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus-circle"></i> Add New Coupon
+                        </a>
+                    </div>
+                    <div class="card-footer clearfix">
+                        <div class="float-start">
+                            <button class="btn btn-danger btn-sm" id="deleteSelected">
+                                <i class="fas fa-trash"></i> Delete Selected
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="container-fluid">
+                @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
+                    <i class="fas fa-check-circle fa-2x me-3"></i>
+                    <div>
+                        <p class="mb-0">Success! {{ session('success') }}</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                           @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong>Error!</strong>
+                        <ul class="mb-0 mt-1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <!-- Main delete form (outside table) -->
+                <form id="deleteSelectedForm" action="{{ route('employee.coupon.deleteSelected') }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                </form>
+
+                <div class="card card-primary card-outline">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table id="couponsTable" class="table table-hover table-striped w-100">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAll"></th>
+                                        <th width="30px">#</th>
+                                        <th width="30px">Sort</th>
+                                        <th>Coupon Name</th>
+                                        <th>Store</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Created By</th>
+                                        <th>Created At</th>
+                                        <th>Updated At</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablecontents">
+                                    @foreach ($coupons as $coupon)
+                                    <tr class="row1" data-id="{{ $coupon->id }}">
+                                        <td>
+                                            <input form="deleteSelectedForm" type="checkbox" class="select-checkbox" name="ids[]" value="{{ $coupon->id }}">
+                                        </td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td class="handle"><i class="fas fa-arrows-alt"></i></td>
+                                        <td>
+                                            <strong>{{ $coupon->name ?: 'N/A' }}</strong>
+                                            @if($coupon->code)
+                                            <div class="text-muted small">Code: {{ $coupon->code }}</div>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-black">
+                                                {{ $coupon->store->name }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if ($coupon->code)
+                                                <span class="badge bg-primary">
+                                                    <i class="fas fa-code"></i> Code
+                                                </span>
+                                            @else
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-percentage"></i> Deal
+                                                </span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($coupon->status == 1)
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-check-circle"></i> Active
+                                                </span>
+                                            @else
+                                                <span class="badge bg-danger">
+                                                    <i class="fas fa-times-circle"></i> Inactive
+                                                </span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm me-2">
+                                                    <span class="avatar-title rounded-circle bg-info text-white">
+                                                        {{ substr($coupon->user->name, 0, 1) }}
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <div class="font-weight-600">{{ $coupon->user->name }}</div>
+                                                    <div class="text-muted small">{{ $coupon->user->email }}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="small text-muted">
+                                                <i class="far fa-calendar-alt"></i> {{ $coupon->created_at->setTimezone('Asia/Karachi')->format('M d, Y') }}
+                                                <div class="text-primary">
+                                                    <i class="far fa-clock"></i> {{ $coupon->created_at->setTimezone('Asia/Karachi')->format('h:i A') }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="small text-muted">
+                                                <i class="far fa-calendar-alt"></i> {{ $coupon->updated_at->setTimezone('Asia/Karachi')->format('M d, Y') }}
+                                                <div class="text-warning">
+                                                    <i class="far fa-clock"></i> {{ $coupon->updated_at->setTimezone('Asia/Karachi')->format('h:i A') }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="{{ route('employee.coupon.edit', $coupon->id) }}"
+                                                   class="btn btn-info"
+                                                   data-bs-toggle="tooltip"
+                                                   title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+
+                                                <form action="{{ route('employee.coupon.destroy', $coupon->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" onclick="return confirm('Are you sure to delete this coupon?')" class="btn btn-danger">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+@endsection
+
+@section('scripts')
+
+@endsection
