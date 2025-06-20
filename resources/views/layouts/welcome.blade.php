@@ -2,7 +2,7 @@
 header("X-Robots-Tag:index, follow");
 ?>
 <!DOCTYPE html>
-<html lang="en" data-layout-mode="detached">
+<html lang="{{ app()->getLocale() }}" data-layout-mode="detached">
 <head>
     <meta charset="utf-8">
     <title>@yield('title', 'Default Title')</title>
@@ -10,7 +10,20 @@ header("X-Robots-Tag:index, follow");
     <meta name="description" content="@yield('description', 'Default description')">
     <meta name="author" content="Coderthemes">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta property="og:title" content="@yield('title')">
+    <meta name="title" content="@yield('title')">
+    <meta name="description" content="@yield('description')">
+    <meta name="keywords" content="@yield('keywords', 'default, keywords')">
+    <meta name="author" content="@yield('author', 'default, author')">
+    <meta name="publisher" content="OBM TECH">
+    <meta name="language" content="{{ app()->getLocale() }}">
+    <meta name="copyright" content="OBM TECH">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('assets/images/logo.png') }}">
+    <meta property="og:image:alt" content="@yield('title')">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="{{ url()->current() }}">
 
@@ -19,7 +32,7 @@ header("X-Robots-Tag:index, follow");
 
     <!-- CSS Assets -->
       <link rel="stylesheet" href="{{ asset('assets/css/navbar.css') }}">
-    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="app-style">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Font Awesome 6 CDN -->

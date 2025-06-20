@@ -1,14 +1,13 @@
 @extends('layouts.welcome')
-@section('title')
-{{ $store->title }}
-@endsection
-@section('description')
-{{ $store->description }}
-@endsection
-
-
+@section('title') {{ $store->title }} @endsection
+@section('description') {{ $store->description }} @endsection
+@section('keywords') {{ $store->keywords }} @endsection
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/store_detail.css') }}">
+@endpush
 @section('main')
-    <main class="container my-5">
+
+    <main class="container my-4 my-lg-5">
         @php
         $codeCount = 0;
         $dealCount = 0;
@@ -22,80 +21,150 @@
         $totalCount = $codeCount + $dealCount;
         @endphp
 
-        <!-- Breadcrumb Navigation -->
+        <!-- Breadcrumb with Icons -->
         <nav aria-label="breadcrumb" class="mb-4">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ url(app()->getLocale() . '/') }}" class="text-primary">Home</a></li>
+            <ol class="breadcrumb bg-light p-3 rounded-3 shadow-sm">
+                <li class="breadcrumb-item">
+                    <a href="{{ url(app()->getLocale() . '/') }}" class="text-decoration-none text-dark">
+                        <i class="fas fa-home me-2"></i>Home
+                    </a>
+                </li>
                 @if($store->category)
-                    <li class="breadcrumb-item"><a href="{{ route('category.detail', ['slug' => Str::slug($store->category)]) }}" class="text-primary">{{ $store->category->name }}</a></li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('category.detail', ['slug' => Str::slug($store->category->slug)]) }}" class="text-decoration-none text-dark">
+                            <i class="fas fa-tag me-2"></i>{{ $store->category->name }}
+                        </a>
+                    </li>
                 @endif
-                <li class="breadcrumb-item"><a href="{{ route('stores') }}" class="text-primary">Stores</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ $store->slug }}</li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('stores') }}" class="text-decoration-none text-dark">
+                        <i class="fas fa-store me-2"></i>Stores
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <i class="fas fa-chevron-right me-2 text-muted"></i>{{ $store->name }}
+                </li>
             </ol>
         </nav>
 
-        <!-- Store Header -->
-        <div class="text-center mb-5">
-            <h1 class="display-4 font-weight-bold text-dark mb-3">{{ $store->name }}</h1>
-            <p class="lead text-muted">Save more with the best deals and discounts!</p>
+        <!-- Store Header with Icons -->
+        <div class="store-header bg-primary bg-gradient p-4 p-md-5 mb-4 mb-lg-5 text-center text-white rounded-4 position-relative overflow-hidden">
+            <div class="position-absolute top-0 end-0 opacity-10">
+                <i class="fas fa-certificate fa-7x"></i>
+            </div>
+            <div class="position-absolute bottom-0 start-0 opacity-10">
+                <i class="fas fa-tags fa-6x"></i>
+            </div>
+            <div class="position-relative">
+                <div class="store-logo-container mx-auto mb-4">
+                    <img src="{{ asset('uploads/stores/' . $store->image) }}" alt="{{ $store->name }}" class="store-logo img-fluid rounded-circle shadow border border-4 border-white">
+                </div>
+                <h1 class="display-5 fw-bold mb-3">
+                    <i class="fas fa-store-alt me-2"></i>{{ $store->name }}
+                </h1>
+                <p class="lead mb-4">
+                    <i class="fas fa-tag me-2"></i>{{ $store->tagline ?? 'Save more with exclusive deals & coupons!' }}
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="{{ $store->destination_url }}" target="_blank" class="btn btn-light btn-lg rounded-pill px-4">
+                        <i class="fas fa-external-link-alt me-2"></i> Visit Store
+                    </a>
+                    <div class="vr d-none d-md-block"></div>
+                    <div class="d-flex align-items-center bg-white bg-opacity-25 px-3 rounded-pill">
+                        <div class="rating me-2">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <i class="fas fa-star {{ $i <= 4 ? 'text-warning' : 'text-white-50' }}"></i>
+                            @endfor
+                        </div>
+                        <span class="text-white">{{ $totalCount }} Offers</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="row">
             <!-- Main Content -->
             <div class="col-lg-9">
                 @if($coupons->isEmpty())
-                    <div class="alert alert-warning text-center py-4">
-                        <h4 class="alert-heading">Oops! No Coupons Available</h4>
-                        <p class="mb-3">Don't worry, you can still explore amazing deals from our partnered brands.</p>
-                        <a href="{{ route('stores') }}" class="btn btn-primary btn-lg">
-                            Explore Brands <i class="fas fa-arrow-right ml-2"></i>
+                    <div class="alert alert-warning text-center py-5 rounded-4 shadow-sm">
+                        <div class="mb-4">
+                            <i class="fas fa-exclamation-triangle fa-3x text-warning"></i>
+                        </div>
+                        <h4 class="alert-heading fw-bold">Oops! No Coupons Available</h4>
+                        <p class="mb-4">Don't worry, you can still explore amazing deals from our partnered brands.</p>
+                        <a href="{{ route('stores') }}" class="btn btn-primary btn-lg rounded-pill px-4">
+                            <i class="fas fa-store me-2"></i>Explore Brands
                         </a>
                     </div>
                 @else
-                    <div class="row">
-                        @foreach ($coupons as $coupon)
-                            <div class="col-md-6 col-lg-4 mb-4">
-                                <div class="card h-100 border-0 shadow-sm hover-shadow transition">
-                                    <div class="card-body d-flex flex-column">
-                                        <div class="text-center mb-4">
-                                            <img src="{{ asset('uploads/stores/' . $store->image) }}" alt="{{ $store->name }}" class="img-fluid" style="max-height: 80px;">
-                                        </div>
-
-                                        <div class="flex-grow-1">
-                                            <div class="border-top pt-3">
-                                                <h5 class="card-title font-weight-bold">{{ $coupon->name }}</h5>
-                                                <hr>
-                                            </div>
-
-                                            <p class="small mb-3 {{ strtotime($coupon->ending_date) < strtotime(now()) ? 'text-danger' : 'text-muted' }}">
-                                                <i class="far fa-clock mr-1"></i> Ends: {{ \Carbon\Carbon::parse($coupon->ending_date)->format('d-m-Y') }}
-                                            </p>
-
-
-                                        </div>
-
-            <div class="coupon-card">
-                <!-- Your coupon card content here -->
-
-                <div class="mt-auto pt-3">
-                    @if ($coupon->code)
-                        <button class="btn btn-primary btn-block py-2"
-                        wire:click="showCouponModal({{ $coupon->id }}, '{{ addslashes($coupon->code) }}', '{{ addslashes($coupon->name) }}', '{{ asset('uploads/stores/' . $store->store_image) }}', '{{ addslashes($coupon->store->destination_url) }}', '{{ addslashes($coupon->store->name) }}')">
-                            <span class="coupon-text">Activate Coupon</span>
-                        </button>
-                    @else
-                        <a href="{{ $coupon->store->destination_url }}" target="_blank"
-                        class="btn btn-success btn-block py-2">
-                            View Deal
+                    <!-- Filter Buttons (Mobile First) -->
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <a href="{{ url()->current() }}" class="btn btn-outline-primary rounded-pill">
+                            <i class="fas fa-list me-2"></i>All ({{ $totalCount }})
                         </a>
-                    @endif
+                        <a href="{{ url()->current() }}?sort=codes" class="btn btn-outline-primary rounded-pill">
+                            <i class="fas fa-ticket-alt me-2"></i>Codes ({{ $codeCount }})
+                        </a>
+                        <a href="{{ url()->current() }}?sort=deals" class="btn btn-outline-primary rounded-pill">
+                            <i class="fas fa-percentage me-2"></i>Deals ({{ $dealCount }})
+                        </a>
+                    </div>
 
-                    <span id="usedCount{{ $coupon->id }}">Used By: {{ $coupon->clicks }}</span>
-                </div>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                        @foreach ($coupons as $coupon)
+                            <div class="col">
+                                <div class="card h-100 border-0 shadow-sm hover-shadow transition-all">
+                                    <div class="card-body d-flex flex-column p-4">
+                                        <!-- Store Logo -->
+                                        <div class="text-center mb-3">
+                                            <img src="{{ asset('uploads/stores/' . $store->image) }}" alt="{{ $store->name }}" class="img-fluid" style="max-height: 60px; width: auto;">
+                                        </div>
 
-                @livewire('coupon-modal')
-            </div>
+                                        <!-- Coupon Content -->
+                                        <div class="flex-grow-1">
+                                            <!-- Coupon Title -->
+                                            <h5 class="card-title fw-bold mb-3">
+                                                <i class="fas {{ $coupon->code ? 'fa-ticket-alt text-dark' : 'fa-percentage text-success' }} me-2"></i>
+                                                {{ $coupon->name }}
+                                            </h5>
 
+                                            <!-- Coupon Description -->
+                                            @if($coupon->description)
+                                                <div class="mb-3">
+                                                    <p class="small text-muted mb-1">
+                                                        <i class="fas fa-info-circle me-1"></i> Details:
+                                                    </p>
+                                                    <p class="small">{{ $coupon->description }}</p>
+                                                </div>
+                                            @endif
+
+                                            <!-- Expiry & Usage -->
+                                            <div class="d-flex justify-content-between small mb-3">
+                                                <span class="{{ strtotime($coupon->ending_date) < strtotime(now()) ? 'text-danger' : 'text-muted' }}">
+                                                    <i class="far fa-clock me-1"></i>
+                                                    {{ \Carbon\Carbon::parse($coupon->ending_date)->format('M d, Y') }}
+                                                </span>
+                                                <span class="text-muted" id="usedCount{{ $coupon->id }}">
+                                                    <i class="fas fa-users me-1"></i> {{ $coupon->clicks ?? 0 }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Action Button -->
+                                        <div class="mt-auto">
+                                            @if ($coupon->code)
+                                                <button class=" btn-code w-100 reveal-code"
+                                                    onclick="handleRevealCode(event, {{ $coupon->id }}, '{{ $coupon->code }}', '{{ $coupon->name }}', '{{ asset('uploads/stores/' . $coupon->store->image) }}', '{{ $coupon->store->destination_url }}', '{{ $coupon->store->name }}')">
+                                                    <i class="fas fa-ticket-alt me-2"></i> Get Code
+                                                </button>
+                                            @else
+                                                <a href="{{ $coupon->store->destination_url }}" target="_blank"
+                                                   class=" btn-deal w-100"
+                                                   onclick="updateClickCount({{ $coupon->id }})">
+                                                    <i class="fas fa-shopping-bag me-2"></i> View Deal
+                                                </a>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -103,110 +172,211 @@
                     </div>
                 @endif
 
+                <!-- Store Content Section -->
                 @if ($store->content)
-                    <div class="mt-5 bg-white p-4 rounded shadow-sm">
-                        {!! $store->content !!}
+                    <div class="mt-5 bg-white p-4 rounded-4 shadow-sm">
+                        <div class="d-flex align-items-center mb-4">
+                            <i class="fas fa-info-circle fa-2x text-dark me-3"></i>
+                            <h3 class="mb-0">About {{ $store->name }}</h3>
+                        </div>
+                        <div class="content-text">
+                            {!! $store->content !!}
+                        </div>
                     </div>
-                @else
-                    <div class="mt-5 text-center text-muted">No additional content available</div>
                 @endif
             </div>
 
             <!-- Sidebar -->
-            <div class="col-lg-3">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body text-center">
-                        <img src="{{ asset('uploads/stores/' . $store->image) }}" alt="{{ $store->name }}" class="img-fluid rounded-circle shadow-sm mb-3" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #f8f9fa;">
-                        <h4 class="card-title font-weight-bold">{{ $store->name }}</h4>
-                        <div class="my-3">
-                            @for ($i = 1; $i <= 5; $i++)
-                                <i class="fas fa-star {{ $i <= 4 ? 'text-warning' : 'text-muted' }}"></i>
-                            @endfor
+            <div class="col-lg-3 mt-4 mt-lg-0">
+                <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+                    <!-- Store Summary -->
+                    <div class="card-header bg-primary text-white py-3">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-pie me-2"></i> Store Summary
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <span class="text-muted">
+                                    <i class="fas fa-ticket-alt text-dark me-2"></i> Coupon Codes
+                                </span>
+                                <span class="badge bg-primary rounded-pill">{{ $codeCount }}</span>
+                            </li>
+                            <li class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <span class="text-muted">
+                                    <i class="fas fa-percentage text-success me-2"></i> Deals
+                                </span>
+                                <span class="badge bg-success rounded-pill">{{ $dealCount }}</span>
+                            </li>
+                            <li class="d-flex justify-content-between align-items-center py-2">
+                                <span class="text-muted">
+                                    <i class="fas fa-tags text-info me-2"></i> Total Offers
+                                </span>
+                                <span class="badge bg-info rounded-pill">{{ $totalCount }}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="card-header bg-light py-3">
+                        <h5 class="mb-0">
+                            <i class="fas fa-link me-2"></i> Quick Links
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a href="{{ $store->destination_url }}" target="_blank" class="btn btn-outline-primary text-start">
+                                <i class="fas fa-external-link-alt me-2"></i> Visit Store
+                            </a>
+                            <a href="{{ route('stores') }}" class="btn btn-outline-secondary text-start">
+                                <i class="fas fa-store me-2"></i> All Stores
+                            </a>
+                            @if($store->category)
+                                <a href="{{ route('category.detail', ['slug' => Str::slug($store->category->slug)]) }}" class="btn btn-outline-secondary text-start">
+                                    <i class="fas fa-tag me-2"></i> {{ $store->category->name }} Category
+                                </a>
+                            @endif
                         </div>
                     </div>
 
-                    <div class="card-footer bg-white">
-                        <a href="{{ $store->destination_url }}" class="btn btn-primary btn-block mb-3">
-                            Visit Store <i class="fas fa-external-link-alt ml-2"></i>
-                        </a>
-
-                        <p class="card-text text-muted mb-3">{{ $store->description }}</p>
-
+                    <!-- Store Details -->
+                    <div class="card-header bg-light py-3">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i> Store Details
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="small text-muted mb-3">
+                            <i class="fas fa-align-left me-2"></i> {{ $store->description }}
+                        </p>
                         @if($store->user)
-                            <p class="small text-muted mb-3">Added by: <span class="font-weight-bold">{{ $store->user->name }}</span></p>
+                            <p class="small text-muted mb-0">
+                                <i class="fas fa-user-plus me-2"></i> Added by: {{ $store->user->name }}
+                            </p>
                         @endif
-
-                        <div class="border-top pt-3 mb-3">
-                            <h5 class="font-weight-bold">About {{ $store->name }}</h5>
-                            <div class="bg-light p-3 rounded mt-2">
-                                <p class="small text-muted mb-0">{{ $store->about }}</p>
-                            </div>
-                        </div>
-
-                        <div class="border-top pt-3 mb-3">
-                            <h5 class="font-weight-bold">Filter By Voucher Codes</h5>
-                            <div class="d-flex flex-wrap gap-2 mt-2">
-                                <a href="{{ url()->current() }}" class="btn btn-sm btn-primary">All</a>
-                                <a href="{{ url()->current() }}?sort=codes" class="btn btn-sm btn-primary">Codes</a>
-                                <a href="{{ url()->current() }}?sort=deals" class="btn btn-sm btn-primary">Deals</a>
-                            </div>
-                        </div>
-
-                        <div class="border-top pt-3">
-                            <h5 class="font-weight-bold">Summary</h5>
-                            <ul class="list-unstyled mt-3">
-                                <li class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="text-muted">
-                                        <i class="fas fa-tag text-primary mr-2"></i> Total Codes
-                                    </span>
-                                    <span class="badge badge-dark">{{ $codeCount }}</span>
-                                </li>
-                                <li class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="text-muted">
-                                        <i class="fas fa-shopping-bag text-primary mr-2"></i> Total Deals
-                                    </span>
-                                    <span class="badge badge-dark">{{ $dealCount }}</span>
-                                </li>
-                                <li class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted">
-                                        <i class="fas fa-file-alt text-primary mr-2"></i> Total
-                                    </span>
-                                    <span class="badge badge-dark">{{ $totalCount }}</span>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-@endsection
 
-@push('styles')
-    <style>
-        .hover-shadow:hover {
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
-        }
-        .card {
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .breadcrumb {
-            background-color: transparent;
-            padding: 0;
-        }
-        .breadcrumb-item.active {
-            color: #6c757d;
-        }
-        .display-4 {
-            font-size: 2.5rem;
-        }
-        @media (max-width: 768px) {
-            .display-4 {
-                font-size: 2rem;
+    <!-- Coupon Code Modal -->
+    <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow border-0">
+                <!-- Modal Header -->
+                <div class="modal-header position-relative bg-primary text-white border-0 rounded-top-4">
+                    <div class="position-absolute top-0 start-50 translate-middle mt-n4">
+                        <span class="badge bg-danger px-3 py-2 shadow-sm">
+                            <i class="fas fa-bolt me-1"></i> LIMITED TIME
+                        </span>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Modal Body -->
+                <div class="modal-body text-center py-4 px-5">
+                    <!-- Logo -->
+                    <div class="mb-4">
+                        <img src="" alt="Brand Logo" id="storeImage" class="img-fluid rounded-circle shadow border border-4 border-light" style="width: 80px; height: 80px; object-fit: contain;">
+                    </div>
+                    <!-- Title -->
+                    <h5 class="fw-bold text-dark mb-3" id="couponName"></h5>
+                    <!-- Coupon Code Section -->
+                    <div class="bg-light rounded-3 p-3 mb-4">
+                        <p class="small text-muted mb-2">
+                            <i class="fas fa-tag me-1"></i> YOUR COUPON CODE
+                        </p>
+                        <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                            <span id="couponCode" class="fw-bold fs-4 text-dark"></span>
+                            <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard()">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p id="copyMessage" class="small text-success fw-bold mb-0" style="display: none;">
+                            <i class="fas fa-check-circle me-1"></i> Copied to clipboard!
+                        </p>
+                    </div>
+                    <!-- Instructions -->
+                    <p class="small text-muted mb-0">
+                        <i class="fas fa-info-circle me-1"></i> Use this code at checkout on
+                        <a href="" id="couponUrl" class="text-decoration-none fw-semibold text-dark"></a>
+                    </p>
+                </div>
+                <!-- Modal Footer -->
+                <div class="modal-footer bg-light rounded-bottom-4 justify-content-center">
+                    <a href="" id="storeLink" class="btn-deal rounded-pill px-4">
+                        <i class="fas fa-external-link-alt me-2"></i> Go to Store
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let couponModal = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            couponModal = new bootstrap.Modal(document.getElementById('couponModal'));
+        });
+
+        function handleRevealCode(event, couponId, couponCode, couponName, storeImage, destinationUrl, storeName) {
+            event.preventDefault();
+
+            // Update modal content
+            document.getElementById('couponCode').textContent = couponCode;
+            document.getElementById('couponName').textContent = couponName;
+            document.getElementById('storeImage').src = storeImage;
+            document.getElementById('couponUrl').href = destinationUrl;
+            document.getElementById('couponUrl').textContent = storeName;
+            document.getElementById('storeLink').href = destinationUrl;
+
+            // Update click count
+            updateClickCount(couponId);
+
+            // Show modal
+            if (couponModal) {
+                couponModal.show();
+            } else {
+                window.open(destinationUrl, '_blank');
             }
         }
-    </style>
-@endpush
+
+        function updateClickCount(couponId) {
+            fetch('{{ route("update.clicks") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ coupon_id: couponId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const usedCountElement = document.getElementById('usedCount' + couponId);
+                    if (usedCountElement) {
+                        usedCountElement.innerHTML = `<i class="fas fa-users me-1"></i> ${data.clicks}`;
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function copyToClipboard() {
+            const code = document.getElementById('couponCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const copyMessage = document.getElementById('copyMessage');
+                copyMessage.style.display = 'block';
+                setTimeout(() => {
+                    copyMessage.style.display = 'none';
+                }, 3000);
+            });
+        }
+    </script>
+    @endpush
+
+
+@endsection

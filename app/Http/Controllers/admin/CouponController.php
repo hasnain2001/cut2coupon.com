@@ -19,20 +19,64 @@ class CouponController extends Controller
     /**
      * Display a listing of the resource.
      */
-public function index(Request $request)
-{
-    // Get distinct stores with coupons
-    $stores = Coupon::with('store', 'user', 'updatedby')
-                ->select('store_id')
-                ->distinct()
-                ->get()
-                ->pluck('store')
-                ->unique()
-                ->filter();
+        public function openCoupon($couponId)
+    {
+        $coupon = Coupon::find($couponId);
+        if ($coupon) {
+            // Increment click count
+            $coupon->clicks++;
+            $coupon->save();
 
-    $selectedStore = $request->input('store_id');
+            // Assuming you have a route named 'store.detail' that shows the store detail page
+            return redirect()->route('store.detail', ['id' => $coupon->store_id]);
+        }
+        // Handle case where coupon is not found
+        return redirect()->back()->with('error', 'Coupon not found.');
+    }
 
-    if ($request->ajax()) {
+    public function updateClicks(Request $request)
+    {
+        $couponId = $request->input('coupon_id');
+        $coupon = Coupon::find($couponId);
+        if ($coupon) {
+            $coupon->clicks++;
+            $coupon->save();
+            return redirect()->back()->with('success', 'Coupon Click added');
+        }
+        return response()->json(['success' => false, 'message' => 'Coupon not found.']);
+    }
+
+    public function index(Request $request)
+    {
+        // Get distinct stores with coupons
+        $stores = Coupon::with('store', 'user', 'updatedby')
+                    ->select('store_id')
+                    ->distinct()
+                    ->get()
+                    ->pluck('store')
+                    ->unique()
+                    ->filter();
+
+        $selectedStore = $request->input('store_id');
+
+        if ($request->ajax()) {
+            $coupons = Coupon::with('store', 'user', 'updatedby')
+                        ->when($selectedStore, function($query) use ($selectedStore) {
+                            return $query->where('store_id', $selectedStore);
+                        })
+                        ->orderBy('store_id')
+                        ->orderByRaw('CAST(`order` AS SIGNED) ASC')
+                        ->orderBy('created_at', 'desc')
+                        ->limit(200)
+                        ->get();
+
+            return response()->json([
+                'coupons' => $coupons,
+                'html' => view('admin.coupon.partials.coupons', compact('coupons'))->render()
+            ]);
+        }
+
+        // Initial page load - show all coupons or filtered if store is selected
         $coupons = Coupon::with('store', 'user', 'updatedby')
                     ->when($selectedStore, function($query) use ($selectedStore) {
                         return $query->where('store_id', $selectedStore);
@@ -43,25 +87,8 @@ public function index(Request $request)
                     ->limit(200)
                     ->get();
 
-        return response()->json([
-            'coupons' => $coupons,
-            'html' => view('admin.coupon.partials.coupons', compact('coupons'))->render()
-        ]);
+        return view('admin.coupon.index', compact('coupons', 'stores', 'selectedStore'));
     }
-
-    // Initial page load - show all coupons or filtered if store is selected
-    $coupons = Coupon::with('store', 'user', 'updatedby')
-                ->when($selectedStore, function($query) use ($selectedStore) {
-                    return $query->where('store_id', $selectedStore);
-                })
-                ->orderBy('store_id')
-                ->orderByRaw('CAST(`order` AS SIGNED) ASC')
-                ->orderBy('created_at', 'desc')
-                ->limit(200)
-                ->get();
-
-    return view('admin.coupon.index', compact('coupons', 'stores', 'selectedStore'));
-}
     public function updateOrder(Request $request)
     {
         Log::info($request->order); // see what's coming in

@@ -1,5 +1,8 @@
 @extends('layouts.welcome')
 @section('title','store')
+@section('description', 'Explore our amazing stores and offers. Find the best products and services in one place.')
+@section('keywords', 'stores, offers, products, services')
+@section('author', 'john doe')
 @section('main')
     <div class="container py-5">
         <!-- Breadcrumb Navigation -->

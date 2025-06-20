@@ -11,29 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stores', function (Blueprint $table) {
+      Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('updated_id')->nullable()->constrained('users')->onDelete('cascade');
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('language_id')->nullable()->constrained('languages')->onDelete('cascade');
             $table->string('name');
             $table->string('slug')->unique();
-            $table->longText('description')->nullable();
-            $table->string('top_store')->default(0)->nullable();
-            $table->string('url')->nullable();
-            $table->string('destination_url');
+            $table->integer('top_category')->default(0)->nullable();
             $table->integer('status')->default(1);
-            $table->string('authentication')->nullable();
-            $table->string('network')->nullable();
             $table->string('image')->nullable();
-            $table->longText('content')->nullable();
-            $table->text('about')->nullable();
-            $table->string('title')->nullable();
-            $table->longText('meta_tag')->nullable();
+            $table->longText('title')->nullable();
             $table->longText('meta_keyword')->nullable();
             $table->longText('meta_description')->nullable();
             $table->timestamps();
-            $table->softDeletes();
+
+            // Add the foreign key constraint separately
+
         });
     }
 
@@ -42,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stores');
+        Schema::dropIfExists('categories');
     }
 };

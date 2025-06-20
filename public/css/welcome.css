@@ -1,0 +1,230 @@
+/* Welcome Page Styles */
+
+/* Hero Slider Styles */
+    .hero-slider {
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+
+        }
+
+    .hero-slider:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-slider img {
+        width: 100%;
+        height: 200px;
+        object-fit: fill;
+        transition: transform 0.5s ease;
+    }
+
+    .hero-slider:hover img {
+        transform: scale(1.05);
+    }
+
+    .slide-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        padding: 2rem;
+        color: white;
+        text-align: center;
+    }
+
+    .slide-overlay h2 {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .slide-overlay p {
+        font-size: 1.1rem;
+        margin-bottom: 0;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+
+    @media (max-width: 768px) {
+        .hero-slide img {
+            height: 300px;
+        }
+        .slide-overlay h2 {
+            font-size: 1.5rem;
+        }
+        .slide-overlay p {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-slide img {
+            height: 250px;
+        }
+        .slide-overlay {
+            padding: 1rem;
+        }
+    }
+
+    /* Store Card Styles */
+    .store-card {
+        transition: all 0.3s ease;
+        height: 100%;
+        border: none;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
+
+    .store-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .store-image-container {
+        height: 100px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .store-image {
+        margin-top:  1rem;
+        width: 50%;
+        height:50%;
+        object-fit: fill;
+        transition: transform 0.5s ease;
+    }
+
+    .store-card:hover .store-image {
+        transform: scale(1.1);
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+    }
+
+    .card-text {
+        color: #6c757d;
+        margin-bottom: 1.25rem;
+    }
+
+    /* Swiper Navigation */
+    .swiper-button-prev,
+    .swiper-button-next {
+        background: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        opacity: 0.8;
+        transition: all 0.3s ease;
+    }
+
+    .swiper-button-prev:hover,
+    .swiper-button-next:hover {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    .swiper-button-prev::after,
+    .swiper-button-next::after {
+        font-size: 1.25rem;
+        color: #333;
+        font-weight: bold;
+    }
+
+    /* Section Styles */
+    .section-title {
+        position: relative;
+        padding-bottom: 1.25rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(to right, #3b82f6, #8b5cf6);
+        border-radius: 2px;
+    }
+
+    .section-subtitle {
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    /* Featured Coupons */
+    .coupon-card {
+        border: none;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        text-align: center;
+    }
+
+    .coupon-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .coupon-image-container {
+        height: 180px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .coupon-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .coupon-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #3b82f6;
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .coupon-actions {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+    }
+
+    /* General Spacing */
+    .section-spacing {
+        padding: 5rem 0;
+    }
+
+    @media (max-width: 768px) {
+        .section-spacing {
+            padding: 3rem 0;
+        }
+    }
+
