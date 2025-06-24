@@ -11,7 +11,9 @@ use App\Http\Controllers\admin\NetworkController;
 use App\Http\Controllers\admin\SearchController;
 use App\Http\Controllers\admin\SliderController;
 use App\Http\Controllers\admin\languageController;
-
+use App\Http\Controllers\UserController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 Route::middleware(['auth','role:admin'])->group(function () {
 
@@ -121,3 +123,5 @@ Route::middleware(['auth','role:admin'])->group(function () {
 });
 
 });
+
+

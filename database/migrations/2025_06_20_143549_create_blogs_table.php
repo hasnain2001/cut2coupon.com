@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('language_id')->nullable()->constrained('languages')->onDelete('cascade');
             $table->foreignId('updated_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignId('language_id')->nullable()->constrained('languages')->onDelete('cascade');
             $table->foreignId('store_id')->constrained()->onDelete('cascade');
             $table->string('status')->default('draft'); // 'draft', 'published', 'archived'
             $table->string('name');

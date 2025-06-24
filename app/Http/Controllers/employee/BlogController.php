@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\language;
+use App\Models\Stores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -21,7 +23,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::orderBy('created_at', 'desc')->get();
+        $blogs = Blog::with('category','language')->orderBy('created_at', 'desc')->get();
         return view('employee.blog.index', compact('blogs'));
     }
 
@@ -30,8 +32,10 @@ class BlogController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        return view('employee.blog.create', compact('categories'));
+        $categories = Category::orderBy('created_at', 'desc')->get();
+        $languages = language::orderBy('created_at', 'desc')->get();
+        $stores = Stores::orderBy('created_at', 'desc')->get();
+        return view('employee.blog.create', compact('categories', 'languages', 'stores'));
 
     }
 
@@ -49,6 +53,9 @@ class BlogController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'content' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
+            'status' => 'nullable|boolean',
+            'language_id' => 'nullable|exists:languages,id',
+            'store_id' => 'nullable|exists:stores,id',
 
         ]);
         if ($request->hasFile('image')) {
@@ -61,9 +68,11 @@ class BlogController extends Controller
 
         $blog = new Blog();
         $blog->user_id = Auth::id();
+        $blog->category_id = $request->input('category_id');
+        $blog->language_id = $request->input('language_id', 1);
+        $blog->store_id = $request->input('store_id');
         $blog->name = $request->input('name');
         $blog->status = $request->input('status', 0);
-        $blog->category_id = $request->input('category_id');
         $blog->slug = $request->input('slug');
         $blog->title = $request->input('title');
         $blog->content = $request->input('content');
@@ -91,8 +100,10 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        $categories = Category::all();
-        return view('employee.blog.edit', compact('blog', 'categories'));
+        $categories = Category::orderBy('created_at', 'desc')->get();
+        $languages = language::orderBy('created_at', 'desc')->get();
+        $stores = Stores::orderBy('created_at', 'desc')->get();
+        return view('employee.blog.edit', compact('blog', 'categories', 'languages', 'stores'));
     }
 
     /**
@@ -109,18 +120,25 @@ class BlogController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'content' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
+            'status' => 'nullable|boolean',
+            'language_id' => 'nullable|exists:languages,id',
+            'store_id' => 'nullable|exists:stores,id',
 
         ]);
-        if ($request->hasFile('image')) {
+       if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $storeNameSlug = Str::slug($request->name);
+            $imageName = $storeNameSlug . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('uploads/blogs'), $imageName);
         } else {
-            $imageName = $blog->image;
+            $imageName = null;
         }
         $request->merge(['image' => $imageName]);
 
-        $blog->user_id = Auth::id();
+        $blog->category_id = $request->input('category_id');
+        $blog->language_id = $request->input('language_id',1);
+        $blog->store_id = $request->input('store_id');
+        $blog->updated_id = Auth::id();
         $blog->name = $request->input('name');
         $blog->slug = $request->input('slug');
         $blog->title = $request->input('title');
@@ -141,6 +159,13 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
+        // Delete the image file if it exists
+        if ($blog->image) {
+            $oldImagePath = public_path('uploads/blogs/' . $blog->image);
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath);
+            }
+        }
         if ($blog->delete()) {
             return redirect()->route('employee.blog.index')->with('success', 'Blog deleted successfully.');
         } else {

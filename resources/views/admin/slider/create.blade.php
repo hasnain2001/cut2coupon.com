@@ -98,7 +98,29 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="button_text" class="font-weight-bold">Button Text</label>
+                                <input type="text" class="form-control border-primary" name="button_text" id="button_text"
+                                       value="{{ old('button_text') }}" placeholder="Enter button text">
+                                @error('button_text')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+
+                        </div>
                     </div>
+                       <div class="mb-3">
+                                <label for="language_id" class="form-label">Language <span class="text-danger">*</span></label>
+                                <select name="language_id" id="language_id" class="form-select" required>
+                                    <option value="" disabled {{ old('language_id') ? '' : 'selected' }}>-- Select Language --</option>
+                                    @foreach($languages as $language)
+                                        <option value="{{ $language->id }}" {{ old('language_id') == $language->id ? 'selected' : '' }}>
+                                            {{ $language->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
 
                     <div class="row mt-3">
                         <div class="col-12 text-right">

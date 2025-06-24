@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
             $currentLocale = App::getLocale();
             $language = language::where('code', $currentLocale)->first();
             $languageId = $language ? $language->id : 10; // fallback to 10 if not found
-            $view->with('categories', Category::with('language')
+            $view->with('navcategories', Category::with('language')
                 ->select('id', 'name', 'slug', 'image', 'language_id')
                 ->where('language_id', $languageId)
                 ->get());

@@ -30,7 +30,7 @@
             @foreach ($categories as $category)
                 @php
                     $storeurl = $category->slug
-                        ? route('category.detail', ['slug' => Str::slug($category->slug)])
+                        ? route('category.detail', ['slug' => Str::slug($category->slug), 'lang' => app()->getLocale()])
                         : '#';
                 @endphp
 
@@ -38,11 +38,11 @@
                     <a href="{{ $storeurl }}" class="text-decoration-none">
                         <div class="card h-100 shadow-sm border-0 hover-shadow">
                             @if ($category->image)
-                                <img 
+                                <img
                                     src="{{ asset('uploads/categories/' . $category->image) }}"
                                     alt="{{ $category->title }}"
                                     class="card-img-top img-fluid"
-                                    style="height: 160px; object-fit: cover;"
+                                    style="height: 160px; object-fit: fill;"
                                     loading="lazy"
                                 >
                             @else

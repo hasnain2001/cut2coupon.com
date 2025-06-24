@@ -32,7 +32,7 @@ Route::middleware(['auth', 'role:employee'])->group(function () {
 
         Route::controller(StoresController::class)->prefix('employee')->name('employee.')->group(function () {
         Route::get('/store', 'index')->name('store.index');
-        Route::get('/store/create', 'create')->name('store.create');
+        Route::get('/storeS/Create', 'create')->name('store.create');
         Route::post('/store/store', 'store')->name('store.store');
         Route::get('/store/edit/{stores}', 'edit')->name('store.edit');
         Route::put('/store/update/{stores}', 'update')->name('store.update');
@@ -73,15 +73,15 @@ Route::middleware(['auth', 'role:employee'])->group(function () {
 
         });
 
-        Route::controller(BlogController::class)->prefix('employee')->name('employee.')->group(function () {
-            Route::get('/blog', 'index')->name('blog.index');
-            Route::get('/blog/create', 'create')->name('blog.create');
-            Route::post('/blog/store', 'store')->name('blog.store');
-            Route::get('/blog/edit/{blog}', 'edit')->name('blog.edit');
-            Route::put('/blog/update/{blog}', 'update')->name('blog.update');
-            Route::delete('/blog/delete/{blog}',  'destroy')->name('blog.destroy');
-            Route::get('/blog/{blog:slug}', 'show')->name('blog.show');
-            Route::post('/blog/deleteSelected', 'deleteSelected')->name('blog.deleteSelected');
+        Route::controller(BlogController::class)->prefix('employee/blogs')->name('employee.')->group(function () {
+            Route::get('/blogs', 'index')->name('blog.index');
+            Route::get('/create', 'create')->name('blog.create');
+            Route::post('/store', 'store')->name('blog.store');
+            Route::get('/edit/{blog}', 'edit')->name('blog.edit');
+            Route::put('/update/{blog}', 'update')->name('blog.update');
+            Route::delete('/delete/{blog}',  'destroy')->name('blog.destroy');
+            Route::get('/{blog:slug}', 'show')->name('blog.show');
+            Route::post('/deleteSelected', 'deleteSelected')->name('blog.deleteSelected');
             });
 
 });

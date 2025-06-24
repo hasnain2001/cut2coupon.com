@@ -127,8 +127,28 @@
                                             @endforeach
                                         </select>
                                     </div>
-
-
+                                    <div class="mb-3">
+                                        <label for="language_id" class="form-label">Language <span class="text-danger">*</span></label>
+                                        <select name="language_id" id="language_id" class="form-select" required>
+                                            <option value="" disabled>-- Select Language --</option>
+                                            @foreach ($languages as $language)
+                                                <option value="{{ $language->id }}" {{ old('language_id', $blog->language_id) == $language->id ? 'selected' : '' }}>
+                                                    {{ $language->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                       <div class="mb-3">
+                                        <label for="store_id" class="form-label"> add in store <span class="text-danger">*</span></label>
+                                        <select name="store_id" id="store_id" class="form-select" required>
+                                            <option value="" disabled>-- Select store --</option>
+                                            @foreach ($stores as $store)
+                                                <option value="{{ $store->id }}" {{ old('store_id', $blog->store_id) == $store->id ? 'selected' : '' }}>
+                                                    {{ $store->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
                                     <div class="mb-3">
                                         <label for="image" class="form-label">blog Logo</label>

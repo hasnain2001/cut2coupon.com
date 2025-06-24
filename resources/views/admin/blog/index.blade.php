@@ -25,14 +25,14 @@
                     <thead>
                         <tr>
                             <th>id</th>
-                            <th>Name/ view </th>
+                            <th>Name </th>
                             <th>Category</th>
-
                             <th>Status</th>
                             <th>image</th>
+                            <th>lang</th>
                             <th>Created by </th>
-                           <th>Created At </th>
-                            <th>Action</th>
+                           <th>Created/updated  </th>
+                            <th>Action/view</th>
 
                         </tr>
                     </thead>
@@ -44,25 +44,43 @@
                         <tr>
 
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $blog->name }}
-                                <a class="btn btn-success text-white btn-sm"
-                                href="{{ route('admin.blog.show', ['blog' => Str::slug($blog->slug)]) }}"
-                                rel="noopener noreferrer">
-                                <i class="ri-eye-line"></i>
-                            </a>
+                            <td>
+                            <small class="text-muted">{{ $blog->name }}</small>
                             </td>
-                            <td>{{ $blog->category->name ?? Null }}</td>
+                            <td>
+                            @if ($blog->category)
+                                <small class="badge bg-light text-dark">{{ $blog->category->name }}</small>
+                            @else
+                                <span class="badge bg-secondary">N/A</span>
+                            @endif
+
+                            </td>
 
                             <td>
                             @if ($blog->status == '1')
-                                <span class="text-success">Active</span>
+                                <small class="text-success">Active</small>
                             @else
-                                <span class="text-danger">Inactive</span>
+                                <small class="text-danger">Inactive</small>
                             @endif
                             </td>
-                            <td><img class=" img-thumbnail" src="{{ asset('uploads/blogs/' . $blog->image) }}" style="width:80px;"></td>
-                            <td>{{$blog->user->name}}</td>
-                            <td>{{ $blog->created_at->setTimezone('Asia/Karachi')->format('l, F j, Y h:i A')}}</td>
+                            <td><img class="img-thumbnail" src="{{ asset('uploads/blogs/' . $blog->image) }}" style="width:30px;"></td>
+                            <td>
+                                @if(isset($blog->language) && !empty($blog->language->name))
+                                    <span class="badge bg-light text-dark">{{ $blog->language->name }}</span>
+                                @else
+                                    <span class="badge bg-secondary">N/A</span>
+                                @endif
+                            </td>
+                            <td>
+                            <small class=" text-muted">{{$blog->user->name}}</small>
+                            <br>
+                            <small class="text-muted">Updated by: {{ $blog->updatedby->name ?? 'N/A' }}</small>
+                           </td>
+                            <td>
+                                <small class="text-muted">Created at: {{ $blog->created_at->setTimezone('Asia/Karachi')->format('l, F j, Y h:i A') }}</small>
+                                <br>
+                                <small class="text-muted">Updated at: {{ $blog->updated_at->setTimezone('Asia/Karachi')->format('l, F j, Y h:i A') }}</small>
+                            </td>
                             <td>
                                 <a href="{{ route('admin.blog.edit', $blog->id) }}" class="btn btn-primary btn-sm">Edit</a>
                                 <form action="{{ route('admin.blog.destroy', $blog->id) }}" method="POST" style="display:inline;">
@@ -70,6 +88,11 @@
                                     @method('DELETE')
                                     <button type="submit" onclick=" return confirm('are you sure to delete  this ') " class="btn btn-danger btn-sm">Delete</button>
                                 </form>
+                                          <a class="btn btn-success text-white btn-sm"
+                                href="{{ route('admin.blog.show', ['blog' => Str::slug($blog->slug)]) }}"
+                                rel="noopener noreferrer">
+                                <i class="ri-eye-line"></i>
+                            </a>
                             </td>
 
 

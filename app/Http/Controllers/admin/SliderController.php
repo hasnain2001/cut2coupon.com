@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
-
+use App\Models\language;
 use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -17,7 +17,9 @@ class SliderController extends Controller
      */
     public function index()
     {
-        $sliders = Slider::all();
+        $sliders = Slider::with('language')
+            ->orderBy('sort_order', 'asc')
+            ->get();
         return view('admin.slider.index', compact('sliders'));
     }
 
@@ -26,7 +28,8 @@ class SliderController extends Controller
      */
     public function create()
     {
-        return view('admin.slider.create');
+        $languages = language::orderBy('created_at','desc')->get();
+        return view('admin.slider.create',compact('languages'));
     }
 
     /**
@@ -54,6 +57,7 @@ class SliderController extends Controller
         $request->merge(['image' => $imageName]);
 
         $slider = new Slider();
+        $slider->language_id = $request->language_id; // Assuming you have a language_id field
         $slider->title = $request->title;
         $slider->subtitle = $request->subtitle;
         $slider->link = $request->link;
@@ -79,7 +83,8 @@ class SliderController extends Controller
      */
     public function edit(Slider $slider)
     {
-        return view('admin.slider.edit', compact('slider'));
+        $languages = language::orderBy('created_at', 'desc')->get();
+        return view('admin.slider.edit', compact('slider', 'languages'));
     }
 
     /**
@@ -99,6 +104,8 @@ class SliderController extends Controller
             'button_text' => 'nullable|string|max:50',
         ]);
 
+        // Update the slider attributes
+        $slider->language_id = $request->language_id ?? $slider->language_id;
         $slider->title = $request->title;
         $slider->subtitle = $request->subtitle;
         $slider->link = $request->link;

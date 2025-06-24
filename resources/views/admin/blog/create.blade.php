@@ -113,21 +113,20 @@
                                     </div>
 
 
-
                                     <div class="mb-3">
                                         <label for="category_id" class="form-label">Category <span class="text-danger">*</span></label>
                                         <select name="category_id" id="category_id" class="form-select" required>
                                             <option value="" disabled selected>-- Select Category --</option>
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                <option value="{{ $category->id }}" data-language="{{ $category->language_id ?? '' }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
                                                     {{ $category->name }}
                                                 </option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="language" class="form-label">Language <span class="text-danger">*</span></label>
-                                        <select name="language_id" id="language" class="form-select" required>
+                                        <label for="language_id" class="form-label">Language <span class="text-danger">*</span></label>
+                                        <select name="language_id" id="language_id" class="form-select" required>
                                             <option value="" disabled selected>-- Select Language --</option>
                                             @foreach ($languages as $language)
                                                 <option value="{{ $language->id }}" {{ old('language_id') == $language->id ? 'selected' : '' }}>
@@ -135,9 +134,18 @@
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <div class="form-text">Select the language for this blog</div>
                                     </div>
-
+                                         <div class="mb-3">
+                                        <label for="store_id" class="form-label">add in store <span class="text-danger">*</span></label>
+                                        <select name="store_id" id="store_id" class="form-select" required>
+                                            <option value="" disabled selected>-- Select store --</option>
+                                            @foreach ($stores as $store)
+                                                <option value="{{ $store->id }}" {{ old('store_id') == $store->id ? 'selected' : '' }}>
+                                                    {{ $store->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
                                     <div class="mb-3">
                                         <label for="image" class="form-label">blog Logo <span class="text-danger">*</span></label>
@@ -181,6 +189,23 @@
 <!-- end row-->
 
 <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const categorySelect = document.getElementById('category_id');
+        const languageSelect = document.getElementById('language_id');
+
+        categorySelect.addEventListener('change', function() {
+            const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+            const languageId = selectedOption.getAttribute('data-language');
+            if (languageId) {
+                for (let i = 0; i < languageSelect.options.length; i++) {
+                    if (languageSelect.options[i].value == languageId) {
+                        languageSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        });
+    });
     // Auto-generate slug and website URL from name while typing
     document.getElementById('name').addEventListener('input', function() {
         const name = this.value.trim();

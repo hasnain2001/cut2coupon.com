@@ -34,7 +34,8 @@
                             <th>Category</th>
                             <th>Status</th>
                              <th>image</th>
-                            <th>Created At </th>
+                             <th>lang</th>
+                            <th>Created/updated </th>
                             <th>View</th>
                             <th>Action</th>
 
@@ -63,9 +64,19 @@
                             </td>
 
 
-                            <td><img class=" img-thumbnail" src="{{ asset('uploads/blogs/' . $blog->image) }}" style="width:80px;"></td>
-
-                            <td>{{ $blog->created_at->setTimezone('Asia/Karachi')->format('l, F j, Y h:i A')}}</td>
+                            <td><img class=" img-thumbnail" src="{{ asset('uploads/blogs/' . $blog->image) }}" style="width:40px;"></td>
+                            <td>
+                                @if(isset($blog->language) && !empty($blog->language->name))
+                                    <span class="badge bg-light text-dark">{{ $blog->language->name }}</span>
+                                @else
+                                    <span class="badge bg-secondary">N/A</span>
+                                @endif
+                            </td>
+                            <td>
+                                <small class="text-muted">{{ $blog->created_at->setTimezone('Asia/Karachi')->format('l, F j, Y h:i A') }}</small>
+                                <br>
+                                <small class="text-muted">Updated at: {{ $blog->updated_at->setTimezone('Asia/Karachi')->format('l, F j, Y h:i A') }}</small>
+                            </td>
                             <td>
                                 <a class="btn btn-success text-white btn-sm"
                                 href="{{ route('employee.blog.show', ['blog' => Str::slug($blog->slug)]) }}"

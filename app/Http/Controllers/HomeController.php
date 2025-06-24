@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Stores;
 use Illuminate\Http\Request;
@@ -121,25 +122,90 @@ class HomeController extends Controller
         return view('store_detail', compact('store', 'coupons', 'relatedStores', 'codeCount', 'dealCount'));
     }
 
-    public function category()
+    public function category($lang = 'en')
     {
-        $categories = Category::all();
+        app()->setLocale($lang);
+
+        // Fetch the language, or default to English
+        $language = language::where('code', $lang)->firstOr(function () {
+            abort(404, 'Language not found');
+        });
+
+        // Filter categories by language_id
+        $categories = Category::where('language_id', $language->id)
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+
         return view('category', compact('categories'));
     }
 
-public function category_detail($name)
+    public function category_detail($name = null, $lang)
     {
-        $slug = Str::slug($name);
-        $title = ucwords(str_replace('-', ' ', $slug));
-        $category = Category::where('slug', $title)->first();
+        app()->setLocale($lang);
 
-        if (!$category) {
+        // Fetch the language, or default to English
+        $language = language::where('code', $lang)->firstOr(function () {
+            abort(404, 'Language not found');
+        });
+
+        if (!$name) {
             return redirect('404');
         }
-
-    $stores = Stores::with('user')
-                ->where('category_id', $category->id)
-                ->get();
+        // Fetch the category by name and language_id
+        $category = Category::where('name', $name)
+                            ->where('language_id', $language->id)
+                            ->firstOr(function () {
+            abort(404, 'Category not found');
+        });
+        // Filter stores by category_id and language_id
+        $stores = Stores::where('category_id', $category->id)
+                        ->where('language_id', $language->id)
+                        ->distinct()
+                        ->get();
         return view('category_detail', compact('category', 'stores'));
     }
+
+    public function blog($lang = 'en')
+    {
+        app()->setLocale($lang);
+
+        // Fetch the language, or default to English
+        $language = language::where('code', $lang)->firstOr(function () {
+            abort(404, 'Language not found');
+        });
+
+        // Filter blogs by language_id and status
+        $blogs = Blog::with('language')
+            ->where('language_id', $language->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        return view('blog', compact('blogs'));
+    }
+
+    public function blog_detail($slug, $lang = 'en')
+    {
+        app()->setLocale($lang);
+
+        // Fetch the language, or default to English
+        $language = language::where('code', $lang)->firstOr(function () {
+            abort(404, 'Language not found');
+        });
+
+        // Fetch the blog by slug and language_id
+        $blog = Blog::with('language')
+            ->where('slug', $slug)
+            ->where('language_id', $language->id)
+            ->firstOr(function () {
+                abort(404, 'Blog not found');
+            });
+        $relatedBlogs = Blog::where('category_id', $blog->category_id)
+            ->where('id', '!=', $blog->id)
+            ->where('language_id', $language->id)
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+        return view('blog_detail', compact('blog', 'relatedBlogs'));
+    }
+
+
 }

@@ -30,6 +30,7 @@
                             <th>status</th>
                             <th>link</th>
                             <th>sort</th>
+                            <th>lang</th>
                             <th>Action</th>
 
                         </tr>
@@ -63,6 +64,10 @@
                             </td>
                                  <td>
                                 <span>{{$slider->sort_order}}</span>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-info-subtle text-info">{{ $slider->language->name }}</span>
                             </td>
                             <td>
                                 <a href="{{ route('admin.slider.edit', $slider->id) }}" class="btn btn-primary btn-sm">Edit</a>

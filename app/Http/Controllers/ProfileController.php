@@ -82,11 +82,21 @@ public function updateImage(Request $request): RedirectResponse
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // Ensure the user is authenticated
+
+        if (!Auth::check()) {
+            return Redirect::route('login')->withErrors(['message' => 'You must be logged in to delete your account.']);
+        }
+
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);
 
         $user = $request->user();
+        // Optional: Delete the user's image if it exists
+        if ($user->image && file_exists(public_path('uploads/user/' . $user->image))) {
+            unlink(public_path('uploads/user/' . $user->image));
+        }
 
         Auth::logout();
 

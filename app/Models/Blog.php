@@ -16,6 +16,17 @@ class Blog extends Model
         'meta_title',
         'meta_description',
         'meta_keyword',
+        'status',
+        'language_id',
+        'store_id',
+        'updated_id',
+    ];
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+    protected $dates = [
+        'created_at',
+        'updated_at',
     ];
 
     public function user()

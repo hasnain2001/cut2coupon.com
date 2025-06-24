@@ -127,9 +127,28 @@
                                             @endforeach
                                         </select>
                                     </div>
-
-
-
+                                    <div class="mb-3">
+                                        <label for="language_id" class="form-label">Language <span class="text-danger">*</span></label>
+                                        <select name="language_id" id="language_id" class="form-select" required>
+                                            <option value="" disabled>-- Select Language --</option>
+                                            @foreach ($languages as $language)
+                                                <option value="{{ $language->id }}" {{ old('language_id', $blog->language_id) == $language->id ? 'selected' : '' }}>
+                                                    {{ $language->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                            <label for="store_id" class="form-label">store <span class="text-danger">*</span></label>
+                                        <select name="store_id" id="store_id" class="form-select" required>
+                                            <option value="" disabled>-- Select store --</option>
+                                            @foreach ($stores as $store)
+                                                <option value="{{ $store->id }}" {{ old('store_id', $blog->store_id) == $store->id ? 'selected' : '' }}>
+                                                    {{ $store->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     <div class="mb-3">
                                         <label for="image" class="form-label">blog Logo</label>
                                         <input type="file" class="form-control" name="image" id="image" accept="image/*">
@@ -224,26 +243,43 @@
 @endpush
 
 @push('scripts')
-<script>
-    // Slug generation from name
-    document.getElementById('name').addEventListener('blur', function() {
-        const name = this.value;
-        const slugField = document.getElementById('slug');
+    <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            const categorySelect = document.getElementById('category_id');
+            const languageSelect = document.getElementById('language_id');
 
-        if (name && !slugField.value) {
-            slugField.value = name.toLowerCase()
-                .replace(/[^\w\s-]/g, '') // Remove special chars
-                .replace(/\s+/g, '-')     // Replace spaces with -
-                .replace(/--+/g, '-');    // Replace multiple - with single -
-        }
-    });
+            categorySelect.addEventListener('change', function() {
+                const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+                const languageId = selectedOption.getAttribute('data-language');
+                if (languageId) {
+                    for (let i = 0; i < languageSelect.options.length; i++) {
+                        if (languageSelect.options[i].value == languageId) {
+                            languageSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+            });
+        });
+        // Slug generation from name
+        document.getElementById('name').addEventListener('blur', function() {
+            const name = this.value;
+            const slugField = document.getElementById('slug');
 
-    // Image removal toggle
-    document.getElementById('image').addEventListener('change', function() {
-        const removeCheckbox = document.getElementById('remove_image');
-        if (removeCheckbox && this.files.length > 0) {
-            removeCheckbox.checked = false;
-        }
-    });
-</script>
+            if (name && !slugField.value) {
+                slugField.value = name.toLowerCase()
+                    .replace(/[^\w\s-]/g, '') // Remove special chars
+                    .replace(/\s+/g, '-')     // Replace spaces with -
+                    .replace(/--+/g, '-');    // Replace multiple - with single -
+            }
+        });
+
+        // Image removal toggle
+        document.getElementById('image').addEventListener('change', function() {
+            const removeCheckbox = document.getElementById('remove_image');
+            if (removeCheckbox && this.files.length > 0) {
+                removeCheckbox.checked = false;
+            }
+        });
+    </script>
 @endpush

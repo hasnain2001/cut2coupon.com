@@ -580,9 +580,9 @@
 <nav class="navbar text-capitalize">
     <div class="navbar-container">
         <!-- Logo (Left Side) -->
-        <a href="/" class="navbar-logo">
-            <x-application-logo />
-            <span>YourBrand</span>
+        <a href="{{ url(app()->getlocale().'/') }}" class="navbar-logo">
+            {{-- <x-application-logo /> --}}
+            <span>cut2coupon</span>
         </a>
 
         <!-- Centered Menu Items -->
@@ -590,23 +590,26 @@
             <li class="navbar-item">
                 <a href="/" class="navbar-links">{{ __('message.home') }}</a>
             </li>
-            <li class="navbar-item">
-                <a href="{{ route('about', ['locale' => app()->getLocale()]) }}" class="navbar-links">About</a>
-            </li>
+
             <li class="navbar-item">
                 <a href="{{ route('stores', ['lang' => app()->getLocale()]) }}" class="navbar-links">@lang('message.brands')</a>
 
             </li>
             <li class="navbar-item mega-dropdown">
-                <a href="{{ route('category') }}" class="navbar-links" id="categoriesLink">Categories <i class="fas fa-chevron-down" style="font-size: 0.8rem; margin-left: 0.3rem;"></i></a>
+                <a href="{{ route('category', ['lang' => app()->getLocale()]) }}" class="navbar-links" id="categoriesLink">Categories <i class="fas fa-chevron-down" style="font-size: 0.8rem; margin-left: 0.3rem;"></i></a>
                 <div class="mega-content">
                     <div class="mega-row">
                         <div class="mega-col">
                             <h3>Popular Categories</h3>
                             <ul>
-                                @foreach ($categories->take(5) as $category)
+                                @foreach ($navcategories->take(5) as $category)
                                     <li>
                                         <a href="{{ route('category.detail', ['slug' => Str::slug($category->slug)]) }}">
+                     <img src="{{ asset('uploads/categories/' . $category->image) }}"
+                                    alt="{{ $category->title }}"
+                                    class="card-img-top img-fluid"
+                                    style="height: 10px; object-fit: fill;"
+                                    loading="lazy">
                                             {{ $category->name }}
                                         </a>
                                     </li>
@@ -616,7 +619,7 @@
                         <div class="mega-col">
                             <h3>Featured</h3>
                             <ul>
-                                @foreach ($categories->slice(5, 5) as $category)
+                                @foreach ($navcategories->slice(5, 5) as $category)
                                     <li>
                                         <a href="{{ route('category.detail', ['slug' => Str::slug($category->slug)]) }}">
                                             {{ $category->name }}
@@ -628,7 +631,7 @@
                         <div class="mega-col">
                             <h3>New Arrivals</h3>
                             <ul>
-                                @foreach ($categories->slice(10, 5) as $category)
+                                @foreach ($navcategories->slice(10, 5) as $category)
                                     <li>
                                         <a href="{{ route('category.detail', ['slug' => Str::slug($category->slug)]) }}">
                                             {{ $category->name }}
@@ -640,7 +643,7 @@
                         <div class="mega-col">
                             <h3>Special Offers</h3>
                             <ul>
-                                @foreach ($categories->slice(15, 5) as $category)
+                                @foreach ($navcategories->slice(15, 5) as $category)
                                     <li>
                                         <a href="{{ route('category.detail', ['slug' => Str::slug($category->slug)]) }}">
                                             {{ $category->name }}
@@ -654,6 +657,9 @@
             </li>
             <li class="navbar-item">
                 <a href="{{ route('contact') }}" class="navbar-links">Contact Us</a>
+            </li>
+             <li class="navbar-item">
+                <a href="{{ route('blog', ['lang' => app()->getLocale()]) }}" class="navbar-links">Blogs</a>
             </li>
         </ul>
 
@@ -705,7 +711,7 @@
     </div>
 </nav>
 
-<!-- Categories Modal -->
+<!-- navCategories Modal -->
 <div class="categories-modal" id="categoriesModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -716,7 +722,7 @@
             <div class="modal-col">
                 <h3>Popular Categories</h3>
                 <ul>
-                    @foreach ($categories->take(5) as $category)
+                    @foreach ($navcategories->take(5) as $category)
                         <li>
                             <a href="{{ route('category.detail', ['slug' => Str::slug($category->slug)]) }}">
                                 {{ $category->name }}
@@ -728,7 +734,7 @@
             <div class="modal-col">
                 <h3>Featured</h3>
                 <ul>
-                    @foreach ($categories->slice(5, 5) as $category)
+                    @foreach ($navcategories->slice(5, 5) as $category)
                         <li>
                             <a href="{{ route('category.detail', ['slug' => Str::slug($category->slug)]) }}">
                                 {{ $category->name }}
@@ -740,7 +746,7 @@
             <div class="modal-col">
                 <h3>New Arrivals</h3>
                 <ul>
-                    @foreach ($categories->slice(10, 5) as $category)
+                    @foreach ($navcategories->slice(10, 5) as $category)
                         <li>
                             <a href="{{ route('category.detail', ['slug' => Str::slug($category->slug)]) }}">
                                 {{ $category->name }}
@@ -752,7 +758,7 @@
             <div class="modal-col">
                 <h3>Special Offers</h3>
                 <ul>
-                    @foreach ($categories->slice(15, 5) as $category)
+                    @foreach ($navcategories->slice(15, 5) as $category)
                         <li>
                             <a href="{{ route('category.detail', ['slug' => Str::slug($category->slug)]) }}">
                                 {{ $category->name }}
