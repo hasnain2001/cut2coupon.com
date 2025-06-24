@@ -67,6 +67,7 @@
 
 
         @yield('scripts')
+        
         <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/super-build/ckeditor.js"></script>
         <script src="{{ asset('assets/js/ck-editor.js') }}"></script>
 

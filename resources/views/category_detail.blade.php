@@ -48,12 +48,12 @@
                     <a href="{{ $storeUrl }}" class="text-decoration-none">
                         <div class="card h-100 border-0 shadow-sm hover-shadow">
                             <div class="p-3 d-flex align-items-center justify-content-center" style="height: 160px; background-color: #f8f9fa;">
-                                <img 
-                                    src="{{ $store->image ? asset('uploads/stores/' . $store->image) : asset('front/assets/images/no-image-found.jpg') }}" 
-                                    class="img-fluid object-fit-contain" 
-                                    alt="{{ $store->name }}" 
+                                <img
+                                    src="{{ $store->image ? asset('uploads/stores/' . $store->image) : asset('front/assets/images/no-image-found.jpg') }}"
+                                    class="img-fluid object-fit-contain"
+                                    alt="{{ $store->name }}"
                                     style="max-height: 100%; max-width: 100%;"
-                                    onerror="this.src='{{ asset('front/assets/images/no-image-found.jpg') }}'"
+                                    onerror="this.src='{{ asset('assets/images/no-image-found.png') }}'"
                                     loading="lazy"
                                 >
                             </div>

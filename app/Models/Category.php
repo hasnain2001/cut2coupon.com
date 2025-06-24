@@ -9,7 +9,7 @@ class Category extends Model
 {
     protected $fillable = [
         'user_id',
-        'update_id',
+        'updated_id',
         'name',
         'slug',
         'top_category',
@@ -18,11 +18,17 @@ class Category extends Model
         'title',
         'meta_keyword',
         'meta_description',
+        'language_id',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function updatedby()
+    {
+        return $this->belongsTo(User::class, 'updated_id');
     }
 
     public function stores() : HasMany
@@ -33,5 +39,9 @@ class Category extends Model
     {
         return $this->hasMany(Blog::class);
     }
-
+    public function language()
+    {
+        return $this->belongsTo(language::class);
+    }
 }
+

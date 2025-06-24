@@ -1,54 +1,56 @@
 @extends('admin.layouts.app')
 @section('title', 'Create Coupon')
+@section('styles')
+    <style>
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .card-title {
+            font-weight: 600;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px 15px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .btn-check:checked + .btn-outline-success {
+            background-color: #198754;
+            color: white;
+        }
+
+        .btn-check:checked + .btn-outline-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .form-check-input:checked {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        .form-switch .form-check-input {
+            height: 1.5em;
+            width: 2.5em;
+        }
+    </style>
+@endsection
 @section('content')
-<style>
-    .card {
-        border-radius: 10px;
-        overflow: hidden;
-    }
-
-    .card-title {
-        font-weight: 600;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-    }
-
-    .form-control, .form-select {
-        border-radius: 8px;
-        padding: 10px 15px;
-    }
-
-    .form-label {
-        font-weight: 500;
-        color: #495057;
-    }
-
-    .btn {
-        border-radius: 8px;
-        font-weight: 500;
-    }
-
-    .btn-check:checked + .btn-outline-success {
-        background-color: #198754;
-        color: white;
-    }
-
-    .btn-check:checked + .btn-outline-danger {
-        background-color: #dc3545;
-        color: white;
-    }
-
-    .form-check-input:checked {
-        background-color: #0d6efd;
-        border-color: #0d6efd;
-    }
-
-    .form-switch .form-check-input {
-        height: 1.5em;
-        width: 2.5em;
-    }
-</style>
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -129,30 +131,33 @@
                                 <div class="card-body">
                                     <h5 class="card-title text-primary mb-3">Store & Settings</h5>
 
+                            <div class="mb-3">
+                                <label for="store_id" class="form-label">Store <span class="text-danger">*</span></label>
+                                <select name="store_id" id="store_id" class="form-select" onchange="updateDestinationAndLanguage()" required>
+                                    <option value="" disabled {{ old('store_id') ? '' : 'selected' }}>-- Select Store --</option>
+                                    @foreach($stores as $store)
+                                        <option value="{{ $store->id }}"
+                                                data-url="{{ $store->destination_url }}"
+                                                data-language-id="{{ $store->language_id }}"
+                                                {{ old('store_id') == $store->id ? 'selected' : '' }}>
+                                            {{ $store->slug }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="language_id" class="form-label">Language <span class="text-danger">*</span></label>
+                                <select name="language_id" id="language_id" class="form-select" required>
+                                    <option value="" disabled {{ old('language_id') ? '' : 'selected' }}>-- Select Language --</option>
+                                    @foreach($languages as $language)
+                                        <option value="{{ $language->id }}" {{ old('language_id') == $language->id ? 'selected' : '' }}>
+                                            {{ $language->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                                     <div class="mb-3">
-                                        <label for="store_id" class="form-label">Store <span class="text-danger">*</span></label>
-                                        <select name="store_id" id="store_id" class="form-select" onchange="updateDestinationAndLanguage()" required>
-                                            <option value="" disabled {{ old('store_id') ? '' : 'selected' }}>-- Select Store --</option>
-                                            @foreach($stores as $store)
-                                                <option value="{{ $store->id }}"
-                                                        data-url="{{ $store->destination_url }}"
-                                                        data-language-id="{{ $store->language_id }}"
-                                                        {{ old('store_id') == $store->id ? 'selected' : '' }}>
-                                                    {{ $store->slug }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="destination_url" class="form-label">Destination URL <span class="text-danger">*</span></label>
-                                        <input type="url" class="form-control" name="destination_url" id="destination_url"
-                                               value="{{ old('destination_url') }}" required
-                                               placeholder="https://example.com/promo">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Priority Rating <span class="text-danger">*</span></label>
+                                        <label class="form-label">Top Priority Rating <span class="text-danger">*</span></label>
                                         <div class="d-flex flex-wrap gap-2">
                                             @for ($i = 0; $i <= 10; $i++)
                                                 <div class="form-check form-check-inline">
@@ -218,8 +223,25 @@
         </div> <!-- end card -->
     </div><!-- end col-->
 </div>
-
+<!-- end row-->
+@endsection
+@section('scripts')
 <script>
+    function updateDestinationAndLanguage() {
+        const storeSelect = document.getElementById('store_id');
+        const selectedOption = storeSelect.options[storeSelect.selectedIndex];
+        const languageId = selectedOption.getAttribute('data-language-id');
+
+        // Update language selection
+        if (languageId) {
+            const languageSelect = document.getElementById('language_id');
+            languageSelect.value = languageId;
+        }
+
+        // Your existing code for updating destination URL would go here
+        // ...
+    }
+
     // Initialize the code input group based on checkbox state
     document.addEventListener('DOMContentLoaded', function() {
         const checkbox = document.getElementById('toggleCodeCheckbox');
@@ -239,6 +261,12 @@
                 document.getElementById('dateError').style.display = 'none';
             }
         });
+
+        // If there's a previously selected store (from old input), update the language
+        const storeSelect = document.getElementById('store_id');
+        if (storeSelect.value) {
+            updateDestinationAndLanguage();
+        }
     });
 
     function toggleCodeInput(checkbox) {
@@ -251,14 +279,6 @@
         }
     }
 
-    function updateDestinationAndLanguage() {
-        const storeSelect = document.getElementById('store_id');
-        const selectedOption = storeSelect.options[storeSelect.selectedIndex];
-        const destinationUrl = selectedOption.getAttribute('data-url');
 
-        document.getElementById('destination_url').value = destinationUrl || '';
-    }
 </script>
-
-
 @endsection

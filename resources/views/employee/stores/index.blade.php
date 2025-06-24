@@ -39,6 +39,7 @@
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>Network</th>
+                                <th>lang</th>
                                 <th>Status</th>
                                 <th>image</th>
                                 <th>Action / view</th>
@@ -53,6 +54,13 @@
                                 <td>{{ $store->name }}</td>
                                 <td>{{ $store->category->name ?? Null }}</td>
                                 <td>{{ $store->network }}</td>
+                                <td>
+                                    @if(isset($store->language) && !empty($store->language->name))
+                                        <span class="badge bg-light text-dark">{{ $store->language->name }}</span>
+                                    @else
+                                        <span class="badge bg-secondary">N/A</span>
+                                    @endif
+                                </td>
                                 <td>
                                     @if ($store->status == '1')
                                         <span class="text-success">Active</span>

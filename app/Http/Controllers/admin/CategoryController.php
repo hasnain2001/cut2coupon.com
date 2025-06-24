@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
-
 use App\Models\Category;
+use App\Models\language;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -14,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('user')->get();
+        $categories = Category::with('user')->with('updatedby')->with('language')->get();
         return view('admin.category.index', compact('categories'));
     }
 
@@ -23,7 +24,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.category.create');
+        $languages = language::orderBy('created_at', 'desc')->get();
+        return view('admin.category.create', compact('languages'));
     }
 
     /**
@@ -40,13 +42,14 @@ class CategoryController extends Controller
             'title' => 'nullable|string|max:255',
             'meta_keyword' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:255',
+            'language_id' => 'required|exists:languages,id',
         ]);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('uploads/categories'), $imageName);
 
-      
+
         } else {
             $imageName = null;
         }
@@ -54,7 +57,8 @@ class CategoryController extends Controller
 
         $category = new Category();
         $category->user_id = Auth::id();
-         $category->name = $request->name;
+        $category->language_id = $request->language_id;
+        $category->name = $request->name;
         $category->slug = $request->slug;
         $category->top_category = $request->top_category;
         $category->status = $request->status;
@@ -80,7 +84,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('admin.category.edit', compact('category'));
+        $languages = language::orderBy('created_at', 'desc')->get();
+        return view('admin.category.edit', compact('category', 'languages'));
     }
 
     /**
@@ -97,22 +102,23 @@ class CategoryController extends Controller
             'title' => 'nullable|string|max:255',
             'meta_keyword' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:255',
+            'language_id' => 'required|exists:languages,id',
         ]);
-    
+
         $imageName = $category->image;
-    
+
             if ($request->hasFile('image')) {
                 // Delete old image if it exists
                 if ($category->image && file_exists(public_path('uploads/categories/'.$category->image))) {
                     unlink(public_path('uploads/categories/'.$category->image));
                 }
-        
+
                 // Upload new image
                 $image = $request->file('image');
                 $imageName = time().'.'.$image->getClientOriginalExtension();
                 $image->move(public_path('uploads/categories'), $imageName);
             }
-    
+
         $category->update([
             'name' => $request->name,
             'slug' => $request->slug,
@@ -122,8 +128,10 @@ class CategoryController extends Controller
             'title' => $request->title,
             'meta_keyword' => $request->meta_keyword,
             'meta_description' => $request->meta_description,
+            'language_id' => $request->language_id ,
+            'updated_id' => Auth::id(),
         ]);
-    
+
         return redirect()->route('admin.category.index')->with('success', 'Category updated successfully.');
     }
 
@@ -132,9 +140,9 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category, $id)
     {
-        
+
         $category->find($id)->delete();
-        
+
         return redirect()->route('admin.category.index')->with('success', 'Category deleted successfully.');
     }
     public function getCategoryById($id)
@@ -142,4 +150,23 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         return response()->json($category);
     }
+    public function deleteSelected(Request $request)
+    {
+        $ids = $request->input('ids');
+        if ($ids) {
+            Category::whereIn('id', $ids)->delete();
+            return response()->json(['success' => 'Selected categories deleted successfully.']);
+        }
+        return response()->json(['error' => 'No categories selected for deletion.'], 400);
+    }
+public function checkSlug(Request $request)
+{
+    $slug = Str::slug($request->input('slug'));
+    $exists = Category::where('slug', $slug)->exists();
+
+    return response()->json([
+        'available' => !$exists,
+        'slug' => $slug
+    ]);
+}
 }

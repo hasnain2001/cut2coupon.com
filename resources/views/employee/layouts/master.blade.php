@@ -1,212 +1,175 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Employee @yield('title')</title>
+    <title>@yield('title')</title>
+<!-- App favicon -->
+<link rel="shortcut icon" href=" {{ asset('assets/images/favicon.ico') }}" />
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+<!-- Plugins css -->
+<link href="{{ asset('assets/libs/flatpickr/flatpickr.min.css')  }}" rel="stylesheet" type="text/css" />
 
-    <!-- Bootstrap CSS -->
-    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
-        <!-- App CSS -->
-    <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet">
+<!-- Theme Config Js -->
+<script src="{{ asset('assets/js/head.js') }}"></script>
 
-    <!-- Icons CSS -->
-    <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet">
+<!-- Bootstrap css -->
+<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="app-style" />
 
-    <!-- DataTables CSS -->
-    <link href="{{ asset('assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
+<!-- App css -->
+<link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
 
-    <!-- jQuery UI CSS for sortable -->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.min.css">
+<!-- Icons css -->
+<link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+<!-- third party css -->
+<link href="{{ asset("assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css") }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+@yield('styles')
+  </head>
+  <body>
+  <!-- Begin page -->
+  <div id="wrapper">
 
-    <!-- Toastr CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    @yield('styles')
-</head>
+    @include('employee.layouts.left-menu')
 
-<body>
-    <div id="wrapper">
-        @include('employee.layouts.left-menu')
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
 
         <div class="content-page">
-            @include('employee.layouts.navigation')
 
-            <main class="content">
-                <div class="container-fluid">
-                    @yield('content')
-                </div>
-            </main>
+         @include('employee.layouts.navigation')
+
+        <!-- Page Content -->
+        <main class=" text-capitalize">
+           @yield('content')
+        </main>
+
         </div>
-    </div>
 
-    <!-- jQuery and jQuery UI -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+        @yield('scripts')
 
-    <!-- Bootstrap JS -->
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+        <!-- Scripts & Styles -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-    <!-- DataTables JS -->
-    <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
-
-    <!-- Toastr JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.min.js" integrity="sha384-RuyvpeZCxMJCqVUGFI0Do1mQrods/hhxYlcVfGPOfQtPJh0JCw12tUAZ/Mv10S7D" crossorigin="anonymous"></script>
-
-
-<!-- Required datatable js -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/fh-3.2.4/r-2.3.0/datatables.min.css"/>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/fh-3.2.4/r-2.3.0/datatables.min.js"></script>
-
-<!-- Sortable JS -->
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-
-<script>
-    $(document).ready(function() {
-        // Initialize DataTable
-        var table = $('#couponsTable').DataTable({
-            responsive: true,
-            dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-                 "<'row'<'col-sm-12'tr>>" +
-                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            buttons: [
-                {
-                    extend: 'excel',
-                    className: 'btn btn-light btn-sm',
-                    text: '<i class="fas fa-file-excel me-1"></i> Excel',
-                    title: 'Coupons List',
-                    exportOptions: {
-                        columns: [1, 3, 4, 5, 6, 7, 8, 9]
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    className: 'btn btn-light btn-sm',
-                    text: '<i class="fas fa-file-pdf me-1"></i> PDF',
-                    title: 'Coupons List',
-                    exportOptions: {
-                        columns: [1, 3, 4, 5, 6, 7, 8, 9]
-                    }
-                },
-                {
-                    extend: 'print',
-                    className: 'btn btn-light btn-sm',
-                    text: '<i class="fas fa-print me-1"></i> Print',
-                    title: 'Coupons List',
-                    exportOptions: {
-                        columns: [1, 3, 4, 5, 6, 7, 8, 9]
-                    }
-                }
-            ],
-            columnDefs: [
-                { orderable: false, targets: [0, 2, 10] },
-                { searchable: false, targets: [0, 1, 2, 5, 6, 10] }
-            ],
-            order: [[1, 'asc']],
-            pageLength: 25,
-            language: {
-                paginate: {
-                    previous: "<i class='fas fa-chevron-left'></i>",
-                    next: "<i class='fas fa-chevron-right'></i>"
-                }
-            },
-            initComplete: function() {
-                $('.dataTables_filter input').addClass('form-control-sm');
-                $('.dataTables_length select').addClass('form-select-sm');
-            }
-        });
-
-        // Select all checkboxes
-        $('#selectAll').click(function() {
-            $('.select-checkbox').prop('checked', this.checked);
-            table.rows().nodes().to$().find('.select-checkbox').prop('checked', this.checked);
-        });
-
-        // Delete selected button click
-        $('#deleteSelected').click(function(e) {
-            e.preventDefault();
-            var selected = table.rows().nodes().to$().find('.select-checkbox:checked').length;
-
-            if (selected > 0) {
-                if (confirm('Are you sure you want to delete the selected ' + selected + ' coupon(s)?')) {
-                    $('#deleteSelectedForm').submit();
-                }
-            } else {
-                alert('Please select at least one coupon to delete.');
-            }
-        });
-
-        // Initialize tooltips
-        $('[data-bs-toggle="tooltip"]').tooltip();
-
-        // Make table rows sortable
-        $("#tablecontents").sortable({
-            items: "tr",
-            cursor: 'move',
-            opacity: 0.6,
-            update: function() {
-                sendOrderToServer();
-            }
-        });
-
-    function sendOrderToServer() {
-        var order = [];
-        var token = '{{ csrf_token() }}';
-
-        $('#tablecontents tr').each(function (index, element) {
-            order.push({
-                id: $(this).data("id"),
-                position: index + 1
+    <script>
+        $(document).ready(function () {
+            const table = $('#basic-datatable').DataTable({
+                responsive: true,
+                ordering: false,
+                paging: false, // disable paging for full drag functionality
+                lengthChange: false,
+                searching: true,
+                info: false
             });
-        });
 
-        $.ajax({
-            url: "{{ route('employee.coupon.update-order') }}",
-            method: "POST",
-            data: {
-                order: order,
-                _token: token
-            },
-            success: function (response) {
-                if (response.status === "success") {
-                    toastr.success(response.message);
-                } else {
-                    toastr.error(response.message);
+            // Make table body sortable
+            $('#tablecontents').sortable({
+                items: 'tr.row1',
+                cursor: 'move',
+                opacity: 0.8,
+                handle: '.handle',
+                helper: function(e, tr) {
+                    var $originals = tr.children();
+                    var $helper = tr.clone();
+                    $helper.children().each(function(index) {
+                        $(this).width($originals.eq(index).width());
+                    });
+                    return $helper;
+                },
+                start: function(e, ui){
+                    ui.placeholder.height(ui.item.height());
+                },
+                update: function () {
+                    sendOrderToServer();
                 }
-            },
-            error: function (xhr) {
-                toastr.error("Error while updating order.");
-                console.error(xhr.responseText);
-            }
-        });
-    }
-    });
-</script>
+            });
 
-<script>
-    $(document).ready(function() {
-        $('#searchInput').autocomplete({
-            source: function(request, response) {
+            function sendOrderToServer() {
+                var order = [];
+                var token = '{{ csrf_token() }}';
+
+                $('#tablecontents tr').each(function (index, element) {
+                    order.push({
+                        id: $(this).data("id"),
+                        position: index + 1
+                    });
+                });
+
                 $.ajax({
-                    url: '{{ route("employee.search") }}',
-                    dataType: 'json',
-                    data: { query: request.term
+                    url: "{{ route('employee.coupon.update-order') }}",
+                    method: "POST",
+                    data: {
+                        order: order,
+                        _token: token
                     },
-                    success: function(data) {
-                        response(data.stores); // Ensure `data.stores` is an array of strings or objects
+                    success: function (response) {
+                        if (response.status === "success") {
+                            toastr.success(response.message);
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function (xhr) {
+                        toastr.error("Error while updating order.");
+                        console.error(xhr.responseText);
                     }
                 });
-            },
-            minLength: 1 // Minimum characters to trigger autocomplete
+            }
         });
-    });
-      </script>
 
-    @yield('scripts')
-</body>
+    </script>
+        <script>
+            $(document).ready(function() {
+                $('#searchInput').autocomplete({
+                    source: function(request, response) {
+                        $.ajax({
+                            url: '{{ route("admin.search") }}',
+                            dataType: 'json',
+                            data: { query: request.term
+                            },
+                            success: function(data) {
+                                response(data.stores); // Ensure `data.stores` is an array of strings or objects
+                            }
+                        });
+                    },
+                    minLength: 1 // Minimum characters to trigger autocomplete
+                });
+            });
+        </script>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <!-- third party js -->
+    <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/pdfmake/build/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/pdfmake/build/vfs_fonts.js') }}"></script>
+    <!-- third party js ends -->
+       <!-- Loading buttons js -->
+       <script src="{{ asset('assets/libs/dragula/dragula.min.js') }}"></script>
+
+       <!-- Buttons init js-->
+       <script src="{{ asset('assets/js/pages/dragula.init.js') }}"></script>
+    <!-- Datatables init -->
+    <script src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+  </body>
 </html>

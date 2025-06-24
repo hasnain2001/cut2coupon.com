@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\employee;
 use App\Http\Controllers\Controller;
-
 use App\Models\Category;
+use App\Models\Language;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -18,7 +18,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::select('id','name','slug','image','created_at','status')->get();
+        $categories = Category::with('language')->select('id','name','slug','image','created_at','status','language_id')->get();
         return view('employee.category.index', compact('categories'));
     }
 
@@ -27,7 +27,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('employee.category.create');
+        $languages = Language::orderby('created_at', 'desc')->get();
+        return view('employee.category.create', compact('languages'));
     }
 
     /**
@@ -44,6 +45,8 @@ class CategoryController extends Controller
             'title' => 'nullable|string|max:255',
             'meta_keyword' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'language_id' => 'required|exists:languages,id',
         ]);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -59,6 +62,7 @@ class CategoryController extends Controller
 
         $category = new Category();
         $category->user_id = Auth::id();
+        $category->language_id = $request->laguage_id;
          $category->name = $request->name;
         $category->slug = $request->slug;
         $category->top_category = $request->top_category;
@@ -85,7 +89,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('employee.category.edit', compact('category'));
+        $languages = Language::orderby('created_at', 'desc')->get();
+        return view('employee.category.edit', compact('category', 'languages'));
     }
 
     /**
@@ -102,6 +107,7 @@ class CategoryController extends Controller
             'title' => 'nullable|string|max:255',
             'meta_keyword' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:255',
+            'language_id' => 'required|exists:languages,id',
         ]);
 
         $imageName = $category->image;
@@ -129,6 +135,8 @@ class CategoryController extends Controller
             'title' => $request->title,
             'meta_keyword' => $request->meta_keyword,
             'meta_description' => $request->meta_description,
+            'language_id' => $request->laguage_id ?? $category->language_id,
+            'updated_id' => Auth::id(),
         ]);
 
         return redirect()->route('employee.category.index')->with('success', 'Category updated successfully.');

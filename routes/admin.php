@@ -10,6 +10,7 @@ use App\Http\Controllers\admin\DeleteRequestController;
 use App\Http\Controllers\admin\NetworkController;
 use App\Http\Controllers\admin\SearchController;
 use App\Http\Controllers\admin\SliderController;
+use App\Http\Controllers\admin\languageController;
 
 
 Route::middleware(['auth','role:admin'])->group(function () {
@@ -25,7 +26,15 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::get('/user/checkin/{id}', 'show')->name('user.show');
     });
 
-
+    Route::controller(languageController::class)->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/languages', 'index')->name('language.index');
+    Route::get('/language/create', 'create')->name('language.create');
+    Route::post('/language/store', 'store')->name('language.store');
+    Route::get('/language/edit/{language}', 'edit')->name('language.edit');
+    Route::put('/language/update/{language}', 'update')->name('language.update');
+    Route::delete('/language/delete/{language}',  'destroy')->name('language.destroy');
+    Route::get('/language/{id}', 'show')->name('language.show');
+    });
 
     Route::controller(CategoryController::class)->prefix('admin')->name('admin.')->group(function () {
     Route::get('/categories', 'index')->name('category.index');
@@ -35,6 +44,8 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::put('/category/update/{category}', 'update')->name('category.update');
     Route::delete('/categories/{id}',  'destroy')->name('category.destroy');
     Route::get('/category/{id}', 'show')->name('category.show');
+    Route::post('/category/deleteSelected', 'deleteSelected')->name('category.deleteSelected');
+    Route::get('/category/checkslug',  'checkSlug')->name('category.checkslug');
     });
 
     Route::controller(StoresController::class)->prefix('admin')->name('admin.')->group(function () {

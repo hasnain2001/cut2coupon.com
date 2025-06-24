@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
+use App\Models\language;
 use App\Models\Stores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -114,8 +115,8 @@ class CouponController extends Controller
     public function create()
     {
         $stores = Stores::orderBy('created_at','desc')->get();
-
-        return view('admin.coupon.create', compact('stores'));
+        $languages = language::orderBy('created_at','desc')->get();
+        return view('admin.coupon.create', compact('stores', 'languages'));
 
     }
 
@@ -134,20 +135,21 @@ class CouponController extends Controller
             'authentication.*' => 'string',
             'store' => 'nullable|string|max:255',
             'top_coupons' => 'nullable|integer|min:0',
-
-
+            'store_id' => 'required|exists:stores,id',
+            'language_id' => 'required|exists:languages,id',
         ]);
 
         $coupon = new Coupon();
+        $coupon->store_id = $request->store_id;
+        $coupon->user_id = Auth::id();
+        $coupon->language_id =  $request->language_id ?? 1;
         $coupon->name = $request->name;
         $coupon->description = $request->description;
         $coupon->code = $request->code;
-        $coupon->store_id = $request->store_id;
         $coupon->ending_date = $request->ending_date;
         $coupon->status = $request->status;
         $coupon->top_coupons = $request->top_coupons;
         $coupon->authentication = $request->authentication;
-        $coupon->user_id = Auth::id();
         $coupon->save();
 
         return redirect()->back()->withInput()->with('success', 'Coupon created successfully.');
@@ -166,8 +168,10 @@ class CouponController extends Controller
      */
     public function edit(Coupon $coupon)
     {
-        $stores = Stores::all();
-        return view('admin.coupon.edit', compact('coupon', 'stores'));
+        $stores = Stores::orderBy('created_at', 'desc')->get();
+        $languages = language::orderBy('created_at', 'desc')->get();
+
+        return view('admin.coupon.edit', compact('coupon', 'stores', 'languages'));
     }
 
     /**
@@ -183,7 +187,9 @@ class CouponController extends Controller
             'status' => 'required|boolean',
             'authentication' => 'nullable|string',
             'authentication.*' => 'nullable|string',
-            'store_id' => 'nullable|exists:stores,id', // Added validation for store_id
+            'store_id' => 'required|exists:stores,id',
+            'top_coupons' => 'nullable|integer|min:0',
+            'language_id' => 'required|exists:languages,id',
         ]);
 
         try {

@@ -142,13 +142,24 @@
                                         @enderror
                                     </div>
 
-                                    <div class="mb-3">
+                                <div class="mb-3">
                                         <label for="category_id" class="form-label">Category <span class="text-danger">*</span></label>
                                         <select name="category_id" id="category_id" class="form-select" required>
                                             <option value="" disabled selected>-- Select Category --</option>
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                <option value="{{ $category->id }}" data-language="{{ $category->language_id ?? '' }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
                                                     {{ $category->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="language_id" class="form-label">Language <span class="text-danger">*</span></label>
+                                        <select name="language_id" id="language_id" class="form-select" required>
+                                            <option value="" disabled selected>-- Select Language --</option>
+                                            @foreach ($languages as $language)
+                                                <option value="{{ $language->id }}" {{ old('language_id') == $language->id ? 'selected' : '' }}>
+                                                    {{ $language->name }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -208,7 +219,48 @@
 </div>
 <!-- end row-->
 
+
+@endsection
+@section('scripts')
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const categorySelect = document.getElementById('category_id');
+        const languageSelect = document.getElementById('language_id');
+
+        categorySelect.addEventListener('change', function() {
+            const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+            const languageId = selectedOption.getAttribute('data-language');
+            if (languageId) {
+                for (let i = 0; i < languageSelect.options.length; i++) {
+                    if (languageSelect.options[i].value == languageId) {
+                        languageSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        });
+    });
+        // Image preview functionality
+    const imageInput = document.getElementById('image');
+    const imagePreview = document.getElementById('image-preview-placeholder');
+    const noImageText = document.getElementById('no-image-text');
+
+    imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                imagePreview.src = event.target.result;
+                imagePreview.style.display = 'block';
+                noImageText.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            imagePreview.style.display = 'none';
+            noImageText.style.display = 'block';
+        }
+    });
+
     // Auto-generate slug and website URL from name while typing
     document.getElementById('name').addEventListener('input', function() {
         const name = this.value.trim();
@@ -216,15 +268,21 @@
         const urlField = document.getElementById('url');
 
         if (name) {
-            // Generate slug from name
+            // Generate slug from name (keep spaces)
             const generatedSlug = name.toLowerCase()
-                .replace(/[^\w\s-]/g, '')  // Remove special chars
-                .replace(/\s+/g, ' ')      // Replace spaces with -
-                .replace(/--+/g, ' ');     // Replace multiple - with single -
+                .replace(/[^\w\s-]/g, '')  // Remove special chars (keep letters, numbers, spaces, and hyphens)
+                .replace(/\s+/g, ' ')      // Replace multiple spaces with single space
+                .trim();                   // Trim whitespace from both ends
 
-            // Generate website URL (basic version)
+            // Generate website URL (replace spaces with hyphens)
+            const generatedUrlSlug = name.toLowerCase()
+                .replace(/[^\w\s-]/g, '')  // Remove special chars
+                .replace(/\s+/g, '-')      // Replace spaces with hyphens
+                .replace(/-+/g, '-')       // Replace multiple hyphens with single hyphen
+                .trim();
+
             const currentUrl = window.location.origin;
-            const generatedUrl = currentUrl + '/store/' + generatedSlug;
+            const generatedUrl = currentUrl + '/store/' + generatedUrlSlug;
 
             // Only update slug if the slug field is empty or matches the previously generated slug
             if (!slugField.value || slugField.value === slugField.dataset.previousGenerated) {
@@ -262,27 +320,8 @@
             slugMessage.style.color = 'green';
         }
     }
-   // Image preview functionality
-    const imageInput = document.getElementById('image');
-    const imagePreview = document.getElementById('image-preview-placeholder');
-    const noImageText = document.getElementById('no-image-text');
-
-    imageInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                imagePreview.src = event.target.result;
-                imagePreview.style.display = 'block';
-                noImageText.style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        } else {
-            imagePreview.style.display = 'none';
-            noImageText.style.display = 'block';
-        }
-    });
 </script>
+
 @endsection
 
 

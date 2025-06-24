@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Coupon;
+use App\Models\language;
 use App\Models\Network;
 use App\Models\Stores;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class StoresController extends Controller
     public function index(  )
     {
 
-        $stores = Stores::select('id','slug','name','category_id','user_id','image','created_at','status','network', 'updated_id','updated_at')->with('user','updatedby')->get();
+        $stores = Stores::select('id','slug','name','category_id','user_id','image','created_at','status','network', 'updated_id','updated_at','language_id')->with('user','updatedby','language')->get();
           return view('admin.stores.index', compact('stores', ));
     }
 
@@ -28,9 +29,10 @@ class StoresController extends Controller
      */
     public function create()
     {
-      $categories = Category::all();
-        $networks = Network::all();
-        return view('admin.stores.create', compact('categories', 'networks'));
+      $categories = Category::orderBy('created_at', 'desc')->get();
+        $networks = Network::orderBy('created_at', 'desc')->get();
+        $languages = language::orderBy('created_at', 'desc')->get();
+        return view('admin.stores.create', compact('categories', 'networks', 'languages'));
     }
 
     /**
@@ -47,6 +49,14 @@ class StoresController extends Controller
             'title' => 'nullable|string|max:255',
             'meta_keyword' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:255',
+            'content' => 'nullable|string',
+            'about' => 'nullable|string',
+            'description' => 'nullable|string',
+            'language_id' => 'required|exists:languages,id',
+            'category_id' => 'required|exists:categories,id',
+            'network' => 'nullable|string|max:255',
+            'top_store' => 'nullable|boolean',
+            'destination_url' => 'nullable|url',
         ]);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -75,9 +85,10 @@ class StoresController extends Controller
         $store->description = $request->description;
         $store->url = $request->url;
         $store->user_id = Auth::id();
+        $store->language_id = $request->language_id;
         $store->save();
 
-        return redirect()->route('admin.store.show', ['slug' => Str::slug($store->slug)])->withInput()->with('success', 'Store created successfully.');
+        return redirect()->route('admin.store.show', ['slug' => Str::slug($store->slug)])->with('success', 'Store created successfully.');
     }
 
     /**
@@ -107,9 +118,10 @@ class StoresController extends Controller
      */
     public function edit(Stores $stores)
     {
-        $categories = Category::all();
-        $networks = Network::all();
-        return view('admin.stores.edit', compact('stores', 'categories', 'networks'));
+        $categories = Category::orderBy('created_at', 'desc')->get();
+        $networks = Network::orderBy('created_at', 'desc')->get();
+        $languages = language::orderBy('created_at', 'desc')->get();
+        return view('admin.stores.edit', compact('stores', 'categories', 'networks', 'languages'));
 
 
     }
@@ -127,6 +139,15 @@ class StoresController extends Controller
             'title' => 'nullable|string|max:255',
             'meta_keyword' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:255',
+            'content' => 'nullable|string',
+            'about' => 'nullable|string',
+            'description' => 'nullable|string',
+            'language_id' => 'required|exists:languages,id',
+            'category_id' => 'required|exists:categories,id',
+            'network' => 'nullable|string|max:255',
+            'top_store' => 'nullable|boolean',
+            'destination_url' => 'nullable|url',
+            'url' => 'required|url',
         ]);
         // Check if the image is uploaded
      // Check if the image is uploaded
@@ -163,6 +184,7 @@ class StoresController extends Controller
         $stores->meta_description = $request->meta_description;
         $stores->content = $request->content;
         $stores->updated_id = Auth::id();
+        $stores->language_id = $request->language_id;
         $stores->save();
 
         return redirect()->route('admin.store.show', ['slug' => Str::slug($stores->slug)])->with('success', 'Store updated successfully.');
@@ -206,22 +228,5 @@ class StoresController extends Controller
                 return redirect()->route('admin.store.index')->with('error', 'No stores selected for deletion.');
             }
         }
-        public function Store_detail($name)
-        {
-            $slug = Str::slug($name);
-            $title = ucwords(str_replace('-', ' ', $slug));
-            $store = Stores::where('slug', $title)->first();
 
-            if (!$store) {
-                return redirect('404');
-            }
-
-            // Get coupons where store_id matches the store's ID
-            $coupons = Coupon::with('user')
-                        ->where('store_id', $store->id)  // Changed from $title to $store->id
-                        ->orderByRaw('CAST(`order` AS SIGNED) ASC')
-                        ->get();
-
-            return view('admin.store_detail', compact('store', 'coupons'));
-        }
 }

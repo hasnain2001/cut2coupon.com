@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('flag')->nullable();
             $table->string('direction')->default('ltr'); // 'ltr' for left-to-right, 'rtl' for right-to-left
-            $table->boolean('is_active')->default(true);
+            $table->boolean('status')->default(true);
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamps();

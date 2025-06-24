@@ -66,6 +66,18 @@
                                         <small class="text-muted">This will be used in the URL for this category.</small>
                                         <div class="invalid-feedback">Please provide a valid slug.</div>
                                     </div>
+                     <div class="mb-3">
+                                        <label for="language" class="form-label">Language <span class="text-danger">*</span></label>
+                                        <select name="language_id" id="language" class="form-select">
+                                            <option value="" disabled>-- Select Language --</option>
+                                            @foreach ($languages as $language)
+                                                <option value="{{ $language->code }}" {{ old('language', $category->language) == $language->code ? 'selected' : '' }}>
+                                                    {{ $language->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <div class="form-text">Select the language for this store. This will help in categorizing and displaying the store correctly based on user preferences.</div>
+                                    </div>
                                 </div>
                             </div>
 

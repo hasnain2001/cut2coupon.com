@@ -25,7 +25,7 @@
                     </ul>
                 </div>
             @endif
-         
+
 
             <form action="{{ route('admin.category.update', $category->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -48,7 +48,15 @@
                         <textarea name="meta_description" id="meta_description" class="form-control" cols="30" rows="4" style="resize: none;">{{ $category->meta_description }}
                         </textarea>
                     </div>
-             
+                    <div class="form-group">
+                        <label for="language">Language</label>
+                        <select name="language_id" id="language" class="form-select">
+                            <option value="">-- Select Language --</option>
+                            @foreach($languages as $language)
+                                <option value="{{ $language->id }}" {{ $category->language_id == $language->id ? 'selected' : '' }}>{{ $language->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     <div class="mb-3">
                         <label for="image" class="form-label"> Image</label>
@@ -65,11 +73,18 @@
                         <label for="status">Status <span class="text-danger">*</span></label><br>
                         <input type="radio" name="status" id="enable" value="1" {{ $category->status == 1 ? 'checked' : '' }}>
                         <label for="enable">Active</label>
-                        
+
                         <input type="radio" name="status" id="disable" value="0" {{ $category->status == 0 ? 'checked' : '' }}>
                         <label for="disable">inActive</label>
                     </div>
-                    <button type="submit" class="btn btn-primary">edit Category</button>
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" name="top_category" id="top_category" value="1" {{ $category->top_category ? 'checked' : '' }}>
+                            <label class="form-check-label" for="top_category">Featured Category</label>
+                        </div>
+                        <small class="text-muted">Show this category in featured sections</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">update Category</button>
                 </form>
 
             </div> <!-- end card body-->

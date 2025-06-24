@@ -187,6 +187,19 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="language" class="form-label">Language <span class="text-danger">*</span></label>
+                                        <select name="language_id" id="language" class="form-select">
+                                            <option value="" disabled>-- Select Language --</option>
+                                            @foreach ($languages as $language)
+                                                <option value="{{ $language->id }}"
+                                                    {{ $stores->language_id == $language->id ? 'selected' : '' }}>
+                                                    {{ $language->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <div class="form-text">Select the language for this store. This will help in categorizing and displaying the store correctly based on user preferences.</div>
+                                    </div>
 
                                     <div class="mb-3">
                                         <label for="about" class="form-label">About Store</label>
@@ -246,63 +259,125 @@
     </div><!-- end col-->
 </div>
 <!-- end row-->
+
+@endsection
+@section('scripts')
+
 <script>
-    // Auto-generate slug and website URL from name while typing
-    document.getElementById('name').addEventListener('input', function() {
-        const name = this.value.trim();
-        const slugField = document.getElementById('slug');
-        const urlField = document.getElementById('url');
+    document.addEventListener('DOMContentLoaded', function() {
 
-        if (name) {
-            // Generate slug from name
-            const generatedSlug = name.toLowerCase()
-                .replace(/[^\w\s-]/g, '')  // Remove special chars
-                .replace(/\s+/g, ' ')      // Replace spaces with -
-                .replace(/--+/g, ' ');     // Replace multiple - with single -
+        // Auto-generate slug from name while typing
+        document.getElementById('name').addEventListener('input', function() {
+            const name = this.value.trim();
+            const slugField = document.getElementById('slug');
 
-            // Generate website URL (basic version)
-            const currentUrl = window.location.origin;
-            const generatedUrl = currentUrl + '/store/' + generatedSlug;
+            if (name && (!slugField.value || slugField.value === slugField.dataset.previousGenerated)) {
+                const generatedSlug = name.toLowerCase()
+                    .replace(/[^\w\s-]/g, '')  // Remove special chars
+                    .replace(/\s+/g, '-')        // Replace spaces with -
+                    .replace(/-+/g, '-');        // Replace multiple - with single -
 
-            // Only update slug if the slug field is empty or matches the previously generated slug
-            if (!slugField.value || slugField.value === slugField.dataset.previousGenerated) {
                 slugField.value = generatedSlug;
                 slugField.dataset.previousGenerated = generatedSlug;
                 checkSlugUniqueness(generatedSlug);
             }
+        });
 
-            // Only update URL if the URL field is empty or matches the previously generated URL
-            if (!urlField.value || urlField.value === urlField.dataset.previousGenerated) {
-                urlField.value = generatedUrl;
-                urlField.dataset.previousGenerated = generatedUrl;
+        // Check slug uniqueness when slug field changes
+        document.getElementById('slug').addEventListener('input', function() {
+            checkSlugUniqueness(this.value);
+        });
+
+        // Function to check slug uniqueness via AJAX
+        function checkSlugUniqueness(slug) {
+            const slugMessage = document.getElementById('slug-message');
+            const storeId = '{{ $stores->id }}';
+
+            if (slug.length < 3) {
+                slugMessage.textContent = 'Slug is too short (min 3 characters)';
+                slugMessage.style.color = 'red';
+                return;
             }
+
+            fetch(`/employee/store/check-slug?slug=${slug}&id=${storeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.unique) {
+                        slugMessage.textContent = 'Slug is available!';
+                        slugMessage.style.color = 'green';
+                    } else {
+                        slugMessage.textContent = 'Slug is already in use!';
+                        slugMessage.style.color = 'red';
+                    }
+                })
+                .catch(error => {
+                    slugMessage.textContent = 'Error checking slug availability';
+                    slugMessage.style.color = 'red';
+                });
         }
+
+        // Image preview functionality
+        document.getElementById('image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('image-preview');
+                    if (!preview) {
+                        const previewDiv = document.createElement('div');
+                        previewDiv.id = 'image-preview-container';
+                        previewDiv.innerHTML = `
+                            <div class="mt-2">
+                                <p class="mb-1">New Image Preview:</p>
+                                <img id="image-preview" src="${event.target.result}" class="img-thumbnail" style="max-width: 200px;">
+                            </div>
+                        `;
+                        e.target.parentNode.appendChild(previewDiv);
+                    } else {
+                        preview.src = event.target.result;
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Toggle remove image checkbox visibility
+        const removeImageCheckbox = document.getElementById('remove_image');
+        if (removeImageCheckbox) {
+            removeImageCheckbox.addEventListener('change', function() {
+                const imagePreview = document.querySelector('img[alt="Current Store Image"]');
+                if (this.checked) {
+                    imagePreview.style.opacity = '0.5';
+                    imagePreview.style.border = '2px solid red';
+                } else {
+                    imagePreview.style.opacity = '1';
+                    imagePreview.style.border = '1px solid #dee2e6';
+                }
+            });
+        }
+
+        // Auto-generate meta fields if empty
+        document.getElementById('name').addEventListener('blur', function() {
+            const name = this.value.trim();
+            const titleField = document.getElementById('title');
+            const metaKeywordField = document.getElementById('meta_keyword');
+            const metaDescriptionField = document.getElementById('meta_description');
+
+            if (name) {
+                if (!titleField.value) {
+                    titleField.value = `${name} - Discounts, Coupons & Deals`;
+                }
+
+                if (!metaKeywordField.value) {
+                    metaKeywordField.value = `${name}, coupons, discounts, deals, promo codes`;
+                }
+
+                if (!metaDescriptionField.value) {
+                    metaDescriptionField.value = `Find the best ${name} coupons, promo codes and discounts. Save money with our verified ${name} deals.`;
+                }
+            }
+        });
     });
-
-    // Check slug when user leaves the name field
-    document.getElementById('name').addEventListener('blur', function() {
-        const slugField = document.getElementById('slug');
-        const urlField = document.getElementById('url');
-
-        if (slugField.value) {
-            checkSlugUniqueness(slugField.value);
-        }
-    });
-
-    // Function to check slug uniqueness
-    function checkSlugUniqueness(slug) {
-        const slugMessage = document.getElementById('slug-message');
-        if (slug.length < 3) {
-            slugMessage.textContent = 'Slug is too short';
-            slugMessage.style.color = 'red';
-        } else {
-            slugMessage.textContent = 'Slug looks good!';
-            slugMessage.style.color = 'green';
-        }
-    }
-
-
 </script>
 @endsection
-
 

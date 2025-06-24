@@ -4,12 +4,14 @@
     <div class="logo-box text-center py-3">
         <!-- Light Logo -->
         <a href="{{ route('employee.dashboard') }}" class="logo-light">
-            <img src="{{ asset('images/logo.png') }}" alt="logo" class="logo-lg" style="height: 40px;">
+            <x-application-logo class="logo-lg" alt="Light Logo" />
+            <span class="logo-text">Employee Dashboard</span>
         </a>
 
         <!-- Dark Logo -->
         <a href="{{ route('employee.dashboard') }}" class="logo-dark">
-            <img src="{{ asset('images/logo.png') }}" alt="dark logo" class="logo-lg" style="height: 40px;">
+            <x-application-logo class="logo-lg" alt="Dark Logo" />
+            <span class="logo-text">Employee Dashboard</span>
         </a>
     </div>
 

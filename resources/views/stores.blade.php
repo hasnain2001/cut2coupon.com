@@ -25,14 +25,20 @@
         <!-- Store Grid -->
         <div class="row g-4">
             @forelse ($stores as $store)
-                @php
-                    $storeUrl = $store->slug
-                        ? route('store.detail', ['slug' => Str::slug($store->slug)])
-                        : '#';
-                @endphp
+            @php
+              $language = $store->language->code;
+              $storeSlug = Str::slug($store->slug);
+
+              // Conditionally generate the URL based on the language
+              $storeurl = $store->slug
+                  ? ($language === 'en'
+                      ? route('store.detail', ['slug' => $storeSlug])  // English route without 'lang'
+                      : route('store_details.withLang', ['lang' => $language, 'slug' => $storeSlug]))  // Other languages
+                  : '#';
+            @endphp
 
                 <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-                    <a href="{{ $storeUrl }}" class="text-decoration-none">
+                    <a href="{{ $storeurl }}" class="text-decoration-none">
                         <div class="card h-100 border-0 shadow-sm hover-shadow">
                             <div class="ratio ratio-1x1">
                                 <img

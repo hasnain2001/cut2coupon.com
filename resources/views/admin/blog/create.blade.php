@@ -125,6 +125,18 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="language" class="form-label">Language <span class="text-danger">*</span></label>
+                                        <select name="language_id" id="language" class="form-select" required>
+                                            <option value="" disabled selected>-- Select Language --</option>
+                                            @foreach ($languages as $language)
+                                                <option value="{{ $language->id }}" {{ old('language_id') == $language->id ? 'selected' : '' }}>
+                                                    {{ $language->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <div class="form-text">Select the language for this blog</div>
+                                    </div>
 
 
                                     <div class="mb-3">

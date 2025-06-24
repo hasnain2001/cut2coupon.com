@@ -126,21 +126,31 @@
                             <div class="card border-light shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-primary mb-3">Store & Settings</h5>
-
-                                    <div class="mb-3">
-                                        <label for="store_id" class="form-label">Store <span class="text-danger">*</span></label>
-                                        <select name="store_id" id="store_id" class="form-select" onchange="updateDestinationAndLanguage()" required>
-                                            <option value="" disabled {{ old('store_id') ? '' : 'selected' }}>-- Select Store --</option>
-                                            @foreach($stores as $store)
-                                                <option value="{{ $store->id }}"
-                                                        data-url="{{ $store->destination_url }}"
-                                                        data-language-id="{{ $store->language_id }}"
-                                                        {{ old('store_id') == $store->id ? 'selected' : '' }}>
-                                                    {{ $store->slug }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                      <div class="mb-3">
+                                <label for="store_id" class="form-label">Store <span class="text-danger">*</span></label>
+                       <select name="store_id" id="store_id" class="form-select" onchange="updateDestinationAndLanguage()" required>
+    <option value="" disabled {{ old('store_id') ? '' : 'selected' }}>-- Select Store --</option>
+    @foreach($stores as $store)
+        <option value="{{ $store->id }}"
+                data-url="{{ $store->destination_url }}"
+                data-language-id="{{ $store->language_id }}"
+                {{ old('store_id') == $store->id ? 'selected' : '' }}>
+            {{ $store->slug }}
+        </option>
+    @endforeach
+</select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="language_id" class="form-label">Language <span class="text-danger">*</span></label>
+                                <select name="language_id" id="language_id" class="form-select" required>
+                                    <option value="" disabled {{ old('language_id') ? '' : 'selected' }}>-- Select Language --</option>
+                                    @foreach($languages as $language)
+                                        <option value="{{ $language->id }}" {{ old('language_id') == $language->id ? 'selected' : '' }}>
+                                            {{ $language->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
 
                                     <div class="mb-3">
@@ -211,46 +221,67 @@
     </div><!-- end col-->
 </div>
 
-<script>
-    // Initialize the code input group based on checkbox state
-    document.addEventListener('DOMContentLoaded', function() {
-        const checkbox = document.getElementById('toggleCodeCheckbox');
-        toggleCodeInput(checkbox);
 
-        // Date validation
-        const dateInput = document.getElementById('ending_date');
-        dateInput.addEventListener('change', function() {
-            const selectedDate = new Date(this.value);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
 
-            if (selectedDate < today) {
-                document.getElementById('dateError').style.display = 'block';
-                this.value = '';
-            } else {
-                document.getElementById('dateError').style.display = 'none';
-            }
+
+@endsection
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the code input group based on checkbox state
+            const checkbox = document.getElementById('toggleCodeCheckbox');
+            toggleCodeInput(checkbox);
+
+            // Date validation
+            const dateInput = document.getElementById('ending_date');
+            dateInput.addEventListener('change', function() {
+                const selectedDate = new Date(this.value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                if (selectedDate < today) {
+                    document.getElementById('dateError').style.display = 'block';
+                    this.value = '';
+                } else {
+                    document.getElementById('dateError').style.display = 'none';
+                }
+            });
+
+            // Initialize language based on initially selected store (if any)
+            updateLanguageFromStore();
         });
-    });
 
-    function toggleCodeInput(checkbox) {
-        const codeInputGroup = document.getElementById('codeInputGroup');
-        if (checkbox.checked) {
-            codeInputGroup.style.display = 'block';
-        } else {
-            codeInputGroup.style.display = 'none';
-            document.getElementById('code').value = '';
+        function toggleCodeInput(checkbox) {
+            const codeInputGroup = document.getElementById('codeInputGroup');
+            if (checkbox.checked) {
+                codeInputGroup.style.display = 'block';
+            } else {
+                codeInputGroup.style.display = 'none';
+                document.getElementById('code').value = '';
+            }
         }
-    }
 
-    function updateDestinationAndLanguage() {
-        const storeSelect = document.getElementById('store_id');
-        const selectedOption = storeSelect.options[storeSelect.selectedIndex];
-        const destinationUrl = selectedOption.getAttribute('data-url');
+        function updateDestinationAndLanguage() {
+            updateLanguageFromStore();
+            // If you have destination URL logic, it would go here
+        }
 
-        document.getElementById('destination_url').value = destinationUrl || '';
-    }
-</script>
+        function updateLanguageFromStore() {
+            const storeSelect = document.getElementById('store_id');
+            const selectedOption = storeSelect.options[storeSelect.selectedIndex];
+            const languageId = selectedOption.getAttribute('data-language-id');
 
-
+            // Update language selection
+            if (languageId) {
+                const languageSelect = document.getElementById('language_id');
+                // Find the option with matching value and select it
+                for (let i = 0; i < languageSelect.options.length; i++) {
+                    if (languageSelect.options[i].value == languageId) {
+                        languageSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+    </script>
 @endsection

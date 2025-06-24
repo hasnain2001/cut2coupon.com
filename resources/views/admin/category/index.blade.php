@@ -27,8 +27,11 @@
                             <th>Name</th>
                             <th>Slug</th>
                            <th>Image</th>
-                           <th>Created By</th>
-                           <th>Created At </th>
+                           <th>lang</th>
+                           <th>Created/Updated By
+                           </th>
+                           <th>Created/Updated At
+                           </th>
                            <th>top</th>
                             <th>Action</th>
                         </tr>
@@ -43,8 +46,24 @@
                             <td>{{ $category->name }}</td>
                             <td>{{ $category->slug }}</td>
                             <td><img class=" img-thumbnail" src="{{ asset('uploads/categories/' . $category->image) }}" style="width:80px;"></td>
-                            <td>{{ $category->user->name }}</td>
-                            <td>{{ $category->created_at->setTimezone('Asia/Karachi')->format('l, F j, Y h:i A')}}</td>
+                            <td>
+                                @if(isset($category->language) && !empty($category->language->name))
+                                    <span class="badge bg-light text-dark">{{ $category->language->name }}</span>
+                                @else
+                                    <span class="badge bg-secondary">N/A</span>
+                                @endif
+                            </td>
+                            <td>
+                                <br>
+                                <small class="text-muted">Created by: {{ $category->user->name ?? 'N/A' }}</small>
+                                <br>
+                                <small class="text-muted">Updated by: {{ $category->updatedby->name ?? 'N/A' }}</small>
+                            </td>
+                            <td>
+                                <small class="text-muted">Created at: {{ $category->created_at->setTimezone('Asia/Karachi')->format('l, F j, Y h:i A') }}</small>
+                                <br>
+                                <small class="text-muted">Updated at: {{ $category->updated_at->setTimezone('Asia/Karachi')->format('l, F j, Y h:i A') }}</small>
+                            </td>
                             <td>{{ $category->top_category ? 'Yes' : 'No' }}</td>
                             <td><a href="{{ route('admin.category.edit', $category->id) }}" class="btn btn-primary btn-sm">Edit</a>
                             <form action="{{ route('admin.category.destroy', $category->id) }}" method="POST" style="display:inline;">

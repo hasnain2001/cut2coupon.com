@@ -22,6 +22,14 @@ class Blog extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function updatedby()
+    {
+        return $this->belongsTo(User::class, 'updated_id');
+    }
+    public function language()
+    {
+        return $this->belongsTo(Language::class, 'language_id');
+    }
 
     public function category()
     {

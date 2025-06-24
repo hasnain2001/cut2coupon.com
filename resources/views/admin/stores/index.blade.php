@@ -46,9 +46,10 @@
                                         <input type="checkbox" id="selectAll" class="form-check-input">
                                     </th>
                                     <th>ID</th>
-                                    <th>Name/Created By</th>
+                                    <th>Name</th>
                                     <th>Category</th>
                                     <th>Network</th>
+                                    <th>Language</th>
                                     <th>Status</th>
                                     <th>Created / updated</th>
                                     <th>Actions</th>
@@ -67,7 +68,8 @@
                                                  class="rounded me-2"
                                                  alt="{{ $store->name }}"
                                                  width="40"
-                                                 onerror="this.onerror=null;this.src='{{ asset('images/default-store.png') }}'">
+                                                 onerror="this.onerror=null;this.src='{{ asset('assets/images/no-image-found.png') }}'"
+                                                 loading="lazy">
                                             <div>
                                                 <h6 class="mb-0">{{ $store->name }}</h6>
                                                 <small class="text-muted d-block">Created by {{ $store->user->name ?? 'N/A' }}</small>
@@ -77,6 +79,11 @@
                                     </td>
                                     <td><small>{{ $store->category->name ?? 'N/A' }}</small></td>
                                     <td><small>{{ $store->network }}</small></td>
+                                    <td>
+                                        <small class="text-muted">
+                                            {{ $store->language ? $store->language->name : 'N/A' }}
+                                        </small>
+                                    </td>
                                     <td>
                                         <span class="badge bg-{{ $store->status == '1' ? 'success' : 'danger' }}-subtle text-{{ $store->status == '1' ? 'success' : 'danger' }} rounded-pill">
                                             {{ $store->status == '1' ? 'Active' : 'Inactive' }}

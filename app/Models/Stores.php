@@ -55,4 +55,8 @@ class Stores extends Model
     {
         return $this->hasMany(Coupon::class, 'store_id');
     }
+    public function language()
+    {
+        return $this->belongsTo(Language::class, 'language_id');
+    }
 }

@@ -18,6 +18,14 @@ class Slider extends Model
         'sort_order',
         'button_text',
     ];
+    protected $casts = [
+        'status' => 'boolean',
+        'sort_order' => 'integer',
+    ];
+    public function language()
+    {
+        return $this->belongsTo(language::class);
+    }
 
     public function getImageUrlAttribute()
     {

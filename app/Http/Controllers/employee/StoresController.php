@@ -4,6 +4,7 @@ namespace App\Http\Controllers\employee;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Coupon;
+use App\Models\Language;
 use App\Models\DeleteRequest;
 use App\Models\Network;
 use App\Models\Stores;
@@ -22,7 +23,7 @@ class StoresController extends Controller
     public function index(  )
     {
 
-        $stores = Stores::select('id','slug','name','category_id','image','created_at','status','network')->get();
+        $stores = Stores::with('language')->select('id','slug','name','category_id','image','created_at','status','network','language_id')->get();
           return view('employee.stores.index', compact('stores', ));
     }
        public function Store_detail($name)
@@ -49,9 +50,10 @@ class StoresController extends Controller
      */
     public function create()
     {
-      $categories = Category::all();
-        $networks = Network::all();
-        return view('employee.stores.create', compact('categories', 'networks'));
+      $categories = Category::orderBy('created_at', 'desc')->get();
+        $networks = Network::orderBy('created_at', 'desc')->get();
+        $languages = Language::orderBy('created_at', 'desc')->get();
+        return view('employee.stores.create', compact('categories', 'networks', 'languages'));
     }
 
     /**
@@ -67,6 +69,13 @@ class StoresController extends Controller
             'title' => 'nullable|string|max:255',
             'meta_keyword' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:255',
+            'language_id' => 'required|integer',
+            'category_id' => 'required|integer',
+            'network' => 'required|string|max:255',
+            'destination_url' => 'required|url',
+            'content' => 'nullable|string',
+            'about' => 'nullable|string',
+            'url' => 'required|url',
         ]);
         if ($request->hasFile('image')) {
                     $image = $request->file('image');
@@ -79,8 +88,10 @@ class StoresController extends Controller
         $request->merge(['image' => $imageName]);
 
         $store = new Stores();
-        $store->name = $request->name;
+        $store->language_id = $request->language_id;
+        $store->user_id = Auth::id();
         $store->category_id = $request->category_id;
+        $store->name = $request->name;
         $store->network = $request->network;
         $store->top_store = $request->top_store;
         $store->destination_url = $request->destination_url;
@@ -93,7 +104,6 @@ class StoresController extends Controller
         $store->content = $request->content;
         $store->about = $request->about;
         $store->url = $request->url;
-        $store->user_id = Auth::id();
         $store->save();
 
         return redirect()->route('employee.store.show',['slug' => Str::slug($store->slug)],)->withInput()->with('success', 'Store created successfully.');
@@ -127,9 +137,10 @@ class StoresController extends Controller
      */
     public function edit(Stores $stores)
     {
-        $categories = Category::all();
-        $networks = Network::all();
-        return view('employee.stores.edit', compact('stores', 'categories', 'networks'));
+        $categories = Category::orderBy('created_at', 'desc')->get();
+        $networks = Network::orderBy('created_at', 'desc')->get();
+        $languages = Language::orderBy('created_at', 'desc')->get();
+        return view('employee.stores.edit', compact('stores', 'categories', 'networks', 'languages'));
 
 
     }
@@ -147,6 +158,13 @@ class StoresController extends Controller
             'title' => 'nullable|string|max:255',
             'meta_keyword' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:255',
+            'language_id' => 'required|integer',
+            'category_id' => 'required|integer',
+            'network' => 'required|string|max:255',
+            'destination_url' => 'required|url',
+            'content' => 'nullable|string',
+            'about' => 'nullable|string',
+            'url' => 'nullable|url',
         ]);
         // Check if the image is uploaded
         if ($request->hasFile('image')) {
@@ -169,7 +187,6 @@ class StoresController extends Controller
         $stores->name = $request->name;
         $stores->description = $request->description;
         $stores->about = $request->about;
-        $stores->category_id = $request->category_id;
         $stores->network = $request->network;
         $stores->top_store = $request->top_store;
         $stores->url = $request->url;
@@ -182,6 +199,8 @@ class StoresController extends Controller
         $stores->meta_description = $request->meta_description;
         $stores->content = $request->content;
         $stores->updated_id = Auth::id();
+        $stores->category_id = $request->category_id;
+        $stores->language_id = $request->language_id ?? $stores->language_id;
         $stores->save();
 
         return redirect()->route('employee.store.index')->with('success', 'Store updated successfully.');

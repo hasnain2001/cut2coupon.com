@@ -91,7 +91,7 @@
                                     Showing <span id="couponCount">{{ $coupons->count() }}</span> coupons
                                 </div>
                                 <div>
-                                 
+
                                 </div>
                             </div>
                         </div>

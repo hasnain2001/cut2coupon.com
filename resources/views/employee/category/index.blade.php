@@ -34,6 +34,7 @@
                                 <th>Image</th>
                                 <th>Created At</th>
                                 <th>Status</th>
+                                <th>lang</th>
                                 <th>Actions/view</th>
                             </tr>
                         </thead>
@@ -53,6 +54,7 @@
                                         <strong>{{ $category->name }}</strong>
                                     </div>
                                 </td>
+
                                 <td>
                                     <span class="badge bg-light text-dark">{{ $category->slug }}</span>
                                 </td>
@@ -77,6 +79,13 @@
                                         <span class="badge bg-danger rounded-pill">Inactive</span>
                                     @endif
                                 </td>
+                                  <td>
+                                @if(isset($category->language) && !empty($category->language->name))
+                                    <span class="badge bg-light text-dark">{{ $category->language->name }}</span>
+                                @else
+                                    <span class="badge bg-secondary">N/A</span>
+                                @endif
+                            </td>
                                 <td>
                                     <div class="d-flex gap-2">
                                         <a href="{{ route('employee.category.edit', $category->id) }}"

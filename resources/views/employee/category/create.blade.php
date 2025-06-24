@@ -63,6 +63,16 @@
                                         <small class="text-muted">This will be used in the URL for this category.</small>
                                         <div class="invalid-feedback">Please provide a valid slug.</div>
                                     </div>
+                                 <div class="mb-3">
+                                    <label for="language" class="form-label">Language</label>
+                                    <select name="language_id" id="language" class="form-select">
+                                        <option value="">-- Select Language --</option>
+                                        @foreach($languages as $language)
+                                            <option value="{{ $language->id }}">{{ $language->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <small class="text-muted">Select a language for the category</small>
+                                </div>
                                 </div>
                             </div>
 

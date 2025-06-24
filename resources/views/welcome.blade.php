@@ -1,6 +1,6 @@
 @extends('layouts.welcome')
 
-@section('title', 'CouponsArena | Latest Discount Codes of 2025 |  Best Offers and Deals')
+@section('title', 'mybrand | Latest Discount Codes of 2025 |  Best Offers and Deals')
 @section('description', 'Explore our amazing stores and offers. Find the best products and services in one place.')
 @section('keywords', 'coupons, discount codes, best offers, deals')
 @section('author', 'john doe')
@@ -140,46 +140,46 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Hero Slider
-    const heroSwiper = new Swiper('.heroSwiper', {
-        loop: true,
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-        },
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        effect: 'fade',
-        fadeEffect: {
-            crossFade: true
-        },
-    });
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hero Slider
+        const heroSwiper = new Swiper('.heroSwiper', {
+            loop: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            effect: 'fade',
+            fadeEffect: {
+                crossFade: true
+            },
+        });
 
-    // Stores Slider
-    const storesSwiper = new Swiper('.storesSwiper', {
-        slidesPerView: 1,
-        spaceBetween: 30,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        breakpoints: {
-            576: { slidesPerView: 2 },
-            768: { slidesPerView: 3 },
-            992: { slidesPerView: 4 },
-        }
+        // Stores Slider
+        const storesSwiper = new Swiper('.storesSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                576: { slidesPerView: 2 },
+                768: { slidesPerView: 3 },
+                992: { slidesPerView: 4 },
+            }
+        });
     });
-});
 </script>
 @endpush

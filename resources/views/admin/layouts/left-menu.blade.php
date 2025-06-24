@@ -4,12 +4,14 @@
     <div class="logo-box text-center py-3">
         <!-- Light Logo -->
         <a href="{{ route('admin.dashboard') }}" class="logo-light">
-            <img src="{{ asset('images/logo.png') }}" alt="logo" class="logo-lg" style="height: 40px;">
+            <x-application-logo alt="logo" class="logo-lg" style="height: 40px;" />
+            <span class="logo-text">Admin Dashboard</span>
         </a>
 
         <!-- Dark Logo -->
         <a href="{{ route('admin.dashboard') }}" class="logo-dark">
-            <img src="{{ asset('images/logo.png') }}" alt="dark logo" class="logo-lg" style="height: 40px;">
+           <x-application-logo alt="dark logo" class="logo-lg" style="height: 40px;" />
+           <span class="logo-text">Admin Dashboard</span>
         </a>
     </div>
 
@@ -173,6 +175,30 @@
                             <a href="{{ route('admin.blog.create') }}" class="menu-link">
                                 <span class="menu-icon"><i class="fas fa-ticket"></i></span>
                                 <span class="menu-text">Add New blog</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <!-- language -->
+            <li class="menu-item">
+                <a href="#language" data-bs-toggle="collapse" class="menu-link">
+                    <span class="menu-icon"><i class="fas fa-language"></i></span>
+                    <span class="menu-text">Languages</span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="language">
+                    <ul class="sub-menu">
+                        <li class="menu-item">
+                            <a href="{{ route('admin.language.index') }}" class="menu-link">
+                                <span class="menu-icon"><i class="fas fa-list-ul"></i></span>
+                                <span class="menu-text">All Languages</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="{{ route('admin.language.create') }}" class="menu-link">
+                                <span class="menu-icon"><i class="fas fa-plus"></i></span>
+                                <span class="menu-text">Add New Language</span>
                             </a>
                         </li>
                     </ul>

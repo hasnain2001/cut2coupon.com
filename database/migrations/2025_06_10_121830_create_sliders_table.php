@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('sliders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('language_id')->constrained('languages')->onDelete('cascade');
+            $table->string('name')->nullable();
             $table->string('title')->nullable();
             $table->string('subtitle')->nullable();
             $table->string('image')->nullable();

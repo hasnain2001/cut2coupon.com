@@ -16,17 +16,48 @@
 
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row align-items-center mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">
-                            <i class="fas fa-tags"></i> Coupons
-                            <small class="d-block text-muted mt-1" style="font-size: 0.8rem;">
-                                <strong>Store:</strong> {{ $store->name }}
-                            </small>
-                        </h1>
+                <div class="row align-items-center mb-3">
+                    <div class="col-md-8">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="display-5 me-3 text-primary">
+                                <i class="fas fa-tags"></i>
+                            </span>
+                            <div>
+                                <h2 class="mb-0 fw-bold">Coupons</h2>
+                                <div class="mt-1">
+                                    <span class="badge  me-2">
+                                        <i class="fas fa-store"></i> {{ $store->name }}
+                                    </span>
+                                    <span class="badge bg-info text-dark me-2">
+                                        <i class="fas fa-network-wired"></i> {{ $store->network }}
+                                    </span>
+                                    <span class="badge bg-secondary me-2">
+                                        <i class="fas fa-list"></i> {{ $store->category->name ?? 'N/A' }}
+                                    </span>
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="fas fa-language"></i> {{ $store->language->name ?? 'N/A' }}
+                                    </span>
+                                    <span class="badge bg-success ms-2">
+                                        <i class="fas fa-calendar-alt"></i>created: {{ $store->created_at->format('M d, Y') }}
+                                        {{ $store->created_at->format('h:i A') }}
+
+                                    </span>
+                                    <span class="badge bg-light text-dark ms-2">
+                                        <i class="fas fa-clock"></i> updated: {{ $store->updated_at->format('M d, Y') }}
+                                        {{ $store->updated_at->format('h:i A') }}
+                                    </span>
+                                    <span class="badge bg-info text-dark ms-2">
+                                        <i class="fas fa-user"></i>created by : {{ $store->user->name }}
+                                    </span>
+                                    <span class="badge bg-secondary ms-2">
+                                        <i class="fas fa-user-edit"></i> updated by: {{ $store->updatedby->name ?? 'N/A' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-6 d-flex justify-content-end">
-                        <a href="{{ route('admin.coupon.create') }}" class="btn btn-primary">
+                    <div class="col-md-4 d-flex justify-content-md-end justify-content-start mt-3 mt-md-0">
+                        <a href="{{ route('employee.coupon.create') }}" class="btn btn-primary btn-lg shadow-sm">
                             <i class="fas fa-plus-circle"></i> Add New Coupon
                         </a>
                     </div>
@@ -47,7 +78,7 @@
                 @endif
 
                 <div class="card card-primary card-outline">
-              
+
 
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -55,12 +86,16 @@
                                 <thead class="bg-light">
                                     <tr>
                                         <th width="30px">#</th>
-                                        <th width="30px">Sort</th>                                        
+                                        <th width="30px">Sort</th>
                                         <th>Coupon Name</th>
                                         <th>Store</th>
                                         <th>Type</th>
                                         <th>Status</th>
-                                        <th>Created By
+                                        <th>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-user"></i>
+                                                <span class="ms-2">Created By</span>
+                                            </div>
                                         <span class="text-muted small">Updated By</span>
                                         </th>
                                         <th>Created At</th>
@@ -72,7 +107,7 @@
                                     @foreach ($coupons as $coupon)
                                     <tr class="row1" data-id="{{ $coupon->id }}">
                                         <td>{{ $loop->iteration }}</td>
-                                   
+
                                         <td class="handle"><i class="fas fa-arrows-alt"></i></td>
                                         <td>
                                             <strong>{{ $coupon->name ?: 'N/A' }}</strong>
@@ -119,6 +154,10 @@
                                                     <div class="text-muted small">{{ $coupon->user->email }}</div>
                                                 </div>
                                             </div>
+                                            <div class="text-muted small">
+                                              updated by  <i class="fas fa-user-edit"></i> {{ $coupon->updatedby->name ?? 'N/A' }}
+                                              {{ $coupon->updatedby->email ?? 'N/A' }}
+                                            </div>
                                         </td>
                                         <td>
                                             <div class="small text-muted">
@@ -138,19 +177,19 @@
                                         </td>
                                         <td>
                                             <div class="btn-group btn-group-sm">
-                                                <a href="{{ route('admin.coupon.edit', $coupon->id) }}" 
-                                                   class="btn btn-info" 
-                                                   data-bs-toggle="tooltip" 
+                                                <a href="{{ route('admin.coupon.edit', $coupon->id) }}"
+                                                   class="btn btn-info"
+                                                   data-bs-toggle="tooltip"
                                                    title="Edit">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                                 <form action="{{ route('admin.coupon.destroy', $coupon->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" 
-                                                            class="btn btn-danger" 
+                                                    <button type="submit"
+                                                            class="btn btn-danger"
                                                             onclick="return confirm('Are you sure you want to delete this coupon?')"
-                                                            data-bs-toggle="tooltip" 
+                                                            data-bs-toggle="tooltip"
                                                             title="Delete">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
@@ -163,7 +202,7 @@
                             </table>
                         </div>
                     </div>
-{{-- 
+{{--
                     <div class="card-footer clearfix">
                         <div class="float-right">
                             <div class="d-inline-block mr-2">

@@ -57,7 +57,7 @@
             </div>
             <div class="position-relative">
                 <div class="store-logo-container mx-auto mb-4">
-                    <img src="{{ asset('uploads/stores/' . $store->image) }}" alt="{{ $store->name }}" class="store-logo img-fluid rounded-circle shadow border border-4 border-white">
+                    <img src="{{ asset('uploads/stores/' . $store->image) }}" alt="{{ $store->name }}" class="store-logo img-fluid rounded-circle shadow  border-4 border-white">
                 </div>
                 <h1 class="display-5 fw-bold mb-3">
                     <i class="fas fa-store-alt me-2"></i>{{ $store->name }}
@@ -278,7 +278,7 @@
                 <div class="modal-body text-center py-4 px-5">
                     <!-- Logo -->
                     <div class="mb-4">
-                        <img src="" alt="Brand Logo" id="storeImage" class="img-fluid rounded-circle shadow border border-4 border-light" style="width: 80px; height: 80px; object-fit: contain;">
+                        <img src="" alt="Brand Logo" id="storeImage" class="img-fluid rounded-circle shadow border-4 border-light" style="width: 80px; height: 80px; object-fit: contain;">
                     </div>
                     <!-- Title -->
                     <h5 class="fw-bold text-dark mb-3" id="couponName"></h5>
@@ -339,6 +339,10 @@
             // Show modal
             if (couponModal) {
                 couponModal.show();
+                // Redirect to destination_url after showing modal
+                setTimeout(function() {
+                    window.open(destinationUrl, '_blank');
+                }, 500); // Adjust delay as needed
             } else {
                 window.open(destinationUrl, '_blank');
             }

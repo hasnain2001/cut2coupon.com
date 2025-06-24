@@ -64,16 +64,30 @@ class User extends Authenticatable
     {
         return $this->hasMany(Category::class, );
     }
+   
+
+    public function blogs(): HasMany
+    {
+        return $this->hasMany(Blog::class, );
+    }
     public function task(): HasMany
     {
         return $this->hasMany(Task::class, );
     }
-    
-// User.php
-public function checkin()
-{
-    return $this->hasMany(CheckInOut::class);
-}
+    public function language(): HasMany
+    {
+        return $this->hasMany(Language::class, 'created_by');
+    }
+    public function updatedBy(): HasMany
+    {
+        return $this->hasMany(Language::class, 'updated_by');
+    }
+
+    // User.php
+    public function checkin()
+    {
+        return $this->hasMany(CheckInOut::class);
+    }
 
 
 

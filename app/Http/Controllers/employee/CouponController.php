@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\employee;
 use App\Http\Controllers\Controller;
-use App\Models\Coupon;
-use App\Models\Stores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -12,37 +10,57 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Coupon;
+use App\Models\Stores;
+use App\Models\Language;
 
 class CouponController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index( Request $request)
+    public function index(Request $request)
     {
+        // Get distinct stores with coupons
+        $stores = Coupon::with('store')
+                    ->select('store_id')
+                    ->distinct()
+                    ->get()
+                    ->pluck('store')
+                    ->unique()
+                    ->filter();
+
+        $selectedStore = $request->input('store_id');
+
         if ($request->ajax()) {
-            $coupons = Coupon::get();
-            return response()->json($coupons);
+            $coupons = Coupon::with('store' )
+                        ->when($selectedStore, function($query) use ($selectedStore) {
+                            return $query->where('store_id', $selectedStore);
+                        })
+                        ->orderBy('store_id')
+                        ->orderByRaw('CAST(`order` AS SIGNED) ASC')
+                        ->orderBy('created_at', 'desc')
+                        ->limit(200)
+                        ->get();
+
+            return response()->json([
+                'coupons' => $coupons,
+                'html' => view('employee.coupon.partials.coupons', compact('coupons'))->render()
+            ]);
         }
-           // Get distinct store names only
-           $couponstore = Coupon::with('user','store')->select('store_id')->distinct()->get();
-           $selectedCoupon = $request->input('store_id');
 
-           // Initialize query
-           $productsQuery = Coupon::query();
+        // Initial page load - show all coupons or filtered if store is selected
+        $coupons = Coupon::with('store', 'user', 'updatedby')
+                    ->when($selectedStore, function($query) use ($selectedStore) {
+                        return $query->where('store_id', $selectedStore);
+                    })
+                    ->orderBy('store_id')
+                    ->orderByRaw('CAST(`order` AS SIGNED) ASC')
+                    ->orderBy('created_at', 'desc')
+                    ->limit(200)
+                    ->get();
 
-           // Filter by selected store if any
-           if ($selectedCoupon) {
-               $productsQuery->where('store_id', $selectedCoupon);
-           }
-
-        $coupons = $productsQuery->with('store','user')->orderBy('store_id')
-            ->orderByRaw('CAST(`order` AS SIGNED) ASC')
-            ->orderBy('created_at', 'desc')
-            ->limit(200)
-            ->get();
-            return view('employee.coupon.index', compact('coupons','couponstore','selectedCoupon'));
+        return view('employee.coupon.index', compact('coupons', 'stores', 'selectedStore'));
     }
     public function updateOrder(Request $request)
     {
@@ -69,8 +87,8 @@ class CouponController extends Controller
     public function create()
     {
         $stores = Stores::orderBy('created_at','desc')->get();
-
-        return view('employee.coupon.create', compact('stores'));
+        $languages = Language::orderBy('created_at', 'desc')->get();
+        return view('employee.coupon.create', compact('stores', 'languages'));
 
     }
 
@@ -89,7 +107,8 @@ class CouponController extends Controller
             'authentication.*' => 'string',
             'store' => 'nullable|string|max:255',
             'top_coupons' => 'nullable|integer|min:0',
-
+            'store_id' => 'required|exists:stores,id',
+            'language_id' => 'nullable|exists:languages,id',
         ]);
 
 
@@ -97,12 +116,13 @@ class CouponController extends Controller
         $coupon->name = $request->name;
         $coupon->description = $request->description;
         $coupon->code = $request->code;
-        $coupon->store_id = $request->store_id;
         $coupon->ending_date = $request->ending_date;
         $coupon->status = $request->status;
         $coupon->top_coupons = $request->top_coupons;
         $coupon->authentication = $request->authentication;
         $coupon->user_id = Auth::id();
+        $coupon->store_id = $request->store_id;
+        $coupon->language_id = $request->language_id ?? null;
         $coupon->save();
 
         return redirect()->back()->withInput()->with('success', 'Coupon created successfully.');
@@ -122,7 +142,8 @@ class CouponController extends Controller
     public function edit(Coupon $coupon)
     {
         $stores = Stores::orderBy('created_at','desc')->get();
-        return view('employee.coupon.edit', compact('coupon', 'stores'));
+        $languages = Language::orderBy('created_at', 'desc')->get();
+        return view('employee.coupon.edit', compact('coupon', 'stores', 'languages'));
     }
 
     /**
@@ -138,7 +159,9 @@ class CouponController extends Controller
             'status' => 'required|boolean',
             'authentication' => 'nullable|string',
             'authentication.*' => 'nullable|string',
-            'store_id' => 'nullable|exists:stores,id', // Added validation for store_id
+            'store_id' => 'nullable|exists:stores,id',
+            'top_coupons' => 'nullable|integer|min:0',
+            'language_id' => 'nullable|exists:languages,id',
         ]);
 
         try {
@@ -146,11 +169,13 @@ class CouponController extends Controller
             $coupon->name = $request->name;
             $coupon->description = $request->description;
             $coupon->code = $request->code;
-            $coupon->store_id = $request->store_id ?? $coupon->store_id;
             $coupon->ending_date = $request->ending_date;
             $coupon->status = $request->status;
             $coupon->top_coupons = $request->top_coupons;
             $coupon->authentication = $request->authentication;
+            $coupon->updated_id = Auth::id();
+            $coupon->store_id = $request->store_id ?? $coupon->store_id;
+            $coupon->language_id = $request->language_id ?? $coupon->language_id;
             $coupon->save();
 
             // Get the store (either from updated store_id or existing)
