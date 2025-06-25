@@ -54,7 +54,7 @@ Route::middleware(['auth', 'role:employee'])->group(function () {
         });
         Route::controller(CouponController::class)->prefix('employee')->name('employee.')->group(function () {
         Route::get('/coupon', 'index')->name('coupon.index');
-        Route::get('/coupon/create', 'create')->name('coupon.create');
+        Route::get('/Coupon/Create', 'create')->name('coupon.create');
         Route::post('/coupon/store', 'store')->name('coupon.store');
         Route::get('/coupon/edit/{coupon}', 'edit')->name('coupon.edit');
         Route::put('/coupon/update/{coupon}', 'update')->name('coupon.update');

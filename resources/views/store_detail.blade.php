@@ -256,6 +256,39 @@
                             </p>
                         @endif
                     </div>
+                    <!-- Related Stores -->
+                    <div class="card-header bg-light py-3">
+                        <h5 class="mb-0">
+                            <i class="fas fa-store-alt me-2"></i> Related Stores
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if($relatedStores->isNotEmpty())
+                            <ul class="list-unstyled mb-0">
+                                @foreach ($relatedStores as $related)
+                                    <li class="d-flex align-items-center mb-3">
+                                        <div class="me-3">
+                                            <img src="{{ asset('uploads/stores/' . $related->image) }}" alt="{{ $related->name }}" class="rounded-circle shadow-sm" style="width: 40px; height: 40px; object-fit: cover;">
+                                        </div>
+                                        <div>
+                                            <a href="{{ route('store.detail', ['slug' => Str::slug($related->slug)]) }}" class="fw-semibold text-dark text-decoration-none">
+                                                {{ $related->name }}
+                                            </a>
+                                            @if($related->tagline)
+                                                <div class="small text-muted">{{ $related->tagline }}</div>
+                                            @endif
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="small text-muted mb-0">
+                                <i class="fas fa-info-circle me-2"></i> No related stores found.
+                            </p>
+                        @endif
+                    </div>
+
+
                 </div>
             </div>
         </div>

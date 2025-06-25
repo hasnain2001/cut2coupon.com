@@ -40,7 +40,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
     Route::controller(CategoryController::class)->prefix('admin')->name('admin.')->group(function () {
     Route::get('/categories', 'index')->name('category.index');
-    Route::get('/category/create', 'create')->name('category.create');
+    Route::get('/Category/Create', 'create')->name('category.create');
     Route::post('/category/store', 'store')->name('category.store');
     Route::get('/category/edit/{category}', 'edit')->name('category.edit');
     Route::put('/category/update/{category}', 'update')->name('category.update');
@@ -52,7 +52,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
     Route::controller(StoresController::class)->prefix('admin')->name('admin.')->group(function () {
     Route::get('/store', 'index')->name('store.index');
-    Route::get('/store/create', 'create')->name('store.create');
+    Route::get('/Store/Create', 'create')->name('store.create');
     Route::post('/store/store', 'store')->name('store.store');
     Route::get('/store/edit/{stores}', 'edit')->name('store.edit');
     Route::put('/store/update/{stores}', 'update')->name('store.update');

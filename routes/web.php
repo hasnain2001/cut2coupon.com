@@ -15,6 +15,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+
 // Route::get('/', function () {return view('welcome');})->name('welcome');
 Route::get('/login', function () {return view('auth.login');})->middleware('guest')->name('login');
 Route::get('/register', function () {return view('auth.register');})->middleware('guest')->name('register');
@@ -36,11 +37,14 @@ Route::get('/register', function () {return view('auth.register');})->middleware
     Route::controller(HomeController::class)->group(function () {
         Route::get('/{lang?}', 'index')->name('home');
         Route::get('/{lang?}/stores', 'stores')->name('stores');
-        Route::get('/store/{slug}', [HomeController::class, 'store_detail'])->name('store.detail');
-        Route::get('/{lang?}/store/{slug}', [HomeController::class, 'store_detail'])->name('store_details.withLang');
+  Route::get('store/{slug}', function($slug) {return app(HomeController::class)->StoreDetails('en', $slug, request());})->name('store.detail');
+    Route::get('/{lang}/store/{slug}', [HomeController::class, 'StoreDetails'])->name('store_details.withLang');
+
         Route::get('{lang?}/category', 'category')->name('category');
         Route::get('{lang?}/category/{slug}', 'category_detail')->name('category.detail');
-        Route::get('/coupons', 'coupons')->name('coupons');
+        Route::get('{lang?}/coupons', 'coupons')->name('coupons');
+        Route::get('{lang?}/coupon', 'coupon')->name('coupons.index');
+        Route::get('{lang?}/coupon/{slug}', 'coupon_detail')->name('coupon.detail');
         Route::get('{lang?}/blog', 'blog')->name('blog');
         Route::get('{lang?}/blog/{slug}', 'blog_detail')->name('blog.detail');
         Route::get('/search', 'search')->name('search');
