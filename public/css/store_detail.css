@@ -37,6 +37,7 @@
             text-transform: uppercase;
             text-decoration: none;
             letter-spacing: 1px;
+            width:100% ;
         }
         .btn-deal::after {
             content: "|";
@@ -96,6 +97,9 @@
     .transition-all {
         transition: all 0.3s ease;
     }
+    .content-text{
+           width: 100%;
+    }
 
     .content-text img {
         max-width: 100%;
@@ -107,6 +111,7 @@
     .content-text p {
         margin-bottom: 1rem;
         line-height: 1.6;
+
     }
 
     @media (max-width: 768px) {
@@ -117,6 +122,9 @@
         .store-logo-container {
             width: 80px;
             height: 80px;
+        }
+        .content-text{
+            width: 100%;
         }
     }
     @media (max-width: 576px) {

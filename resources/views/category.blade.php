@@ -10,18 +10,18 @@
             <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
                 <li class="breadcrumb-item">
                     <a href="/" class="text-primary text-decoration-none fw-semibold">
-                        <i class="fas fa-home me-1"></i>Home
+                        <i class="fas fa-home me-1"></i>@lang('nav.home')
                     </a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Categories</li>
+                <li class="breadcrumb-item active" aria-current="page">@lang('nav.cateories')</li>
             </ol>
         </nav>
 
         <!-- Page Header -->
         <div class="text-center mb-3">
-            <h1 class="display-6 fw-bold text-dark mb-3">Explore Our Categories</h1>
+            <h1 class="display-6 fw-bold text-dark mb-3">@lang('message.Explore Our Categories')</h1>
             <p class="lead text-secondary mx-auto" style="max-width: 600px;">
-                Discover a wide range of products organized for your convenience
+                @lang('message.p1')
             </p>
         </div>
 

@@ -335,7 +335,7 @@
                                     <small class="form-text text-muted">Higher numbers appear first</small>
                                 </div>
 
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label>Coupon Type</label>
                                     <div class="auth-options">
                                         @php
@@ -361,7 +361,7 @@
                                             </div>
                                         @endforeach
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>

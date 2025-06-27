@@ -23,7 +23,9 @@ class StoresController extends Controller
     public function index(  )
     {
 
-        $stores = Stores::with('language')->select('id','slug','name','category_id','image','created_at','status','network','language_id')->get();
+        $stores = Stores::with('language')->select('id','slug','name','category_id','image','created_at','status','network','language_id')
+        ->orderBy('created_at','desc')
+        ->get();
           return view('employee.stores.index', compact('stores', ));
     }
        public function Store_detail($name)

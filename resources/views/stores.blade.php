@@ -17,7 +17,7 @@
                 <span class="mx-2 text-muted">
                 <i class="fas fa-chevron-right"></i>
                 </span>
-                Stores
+                @lang('nav.stores')
             </li>
             </ol>
         </nav>

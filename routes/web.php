@@ -8,6 +8,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PusherController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\ChatMiddleware;
 use App\Http\Middleware\Localization;
 use App\Http\Middleware\RoleMiddleware;
@@ -41,21 +43,27 @@ Route::get('/register', function () {return view('auth.register');})->middleware
     Route::get('/{lang}/store/{slug}', [HomeController::class, 'StoreDetails'])->name('store_details.withLang');
 
         Route::get('{lang?}/category', 'category')->name('category');
+        Route::get('/category/{slug}',function($slug) {return app(HomeController::class)->category_detail('en', $slug, request());})->name('blog.detail.withlang');
         Route::get('{lang?}/category/{slug}', 'category_detail')->name('category.detail');
         Route::get('{lang?}/coupons', 'coupons')->name('coupons');
         Route::get('{lang?}/coupon', 'coupon')->name('coupons.index');
         Route::get('{lang?}/coupon/{slug}', 'coupon_detail')->name('coupon.detail');
         Route::get('{lang?}/blog', 'blog')->name('blog');
-        Route::get('{lang?}/blog/{slug}', 'blog_detail')->name('blog.detail');
-        Route::get('/search', 'search')->name('search');
-     });
+        Route::get('/blog/{slug}',function($slug) {return app(HomeController::class)->blog_detail('en', $slug, request());})->name('blog.detail');
+        Route::get('/{lang}/blog/{slug}', 'blog_detail')->name('blog-details.withLang');
+       });
       });
-
+    Route::controller(SearchController::class)->group(function () {
+            Route::get('/Search/Store', 'search')->name('search');
+            Route::get('/Search/Stores', 'searchResults')->name('search_results');
+     });
 
      Route::controller(CouponController::class)->group(function () {
         Route::post('/update-clicks', 'updateClicks')->name('update.clicks');
         Route::get('/clicks/{couponId}',  'openCoupon')->name('open.coupon');
      });
+     Route::get('/Generate-sitemap', [SitemapController::class, 'generate']);
+    Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 
     Route::middleware(['auth','role:web'])->group(function () {

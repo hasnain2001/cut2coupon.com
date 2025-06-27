@@ -79,7 +79,7 @@
                             </td>
                             <td>
                                 <a class="btn btn-success text-white btn-sm"
-                                href="{{ route('employee.blog.show', ['blog' => Str::slug($blog->slug)]) }}"
+                                href="{{ route('employee.blog.show', ['slug' => Str::slug($blog->slug)]) }}"
                                 rel="noopener noreferrer">
                                 <i class="ri-eye-line"></i>
                             </td>

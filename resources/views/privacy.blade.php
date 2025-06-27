@@ -1,10 +1,8 @@
 @extends('layouts.welcome')
-
 @section('title', 'Privacy Policy')
 @section('description', 'Read our privacy policy to understand how we handle your data and protect your privacy.')
 @section('keywords', 'privacy, policy, data protection')
 @section('author', 'John Doe')
-
 @section('main')
 <div class="container py-1">
     <div class="row justify-content-center">

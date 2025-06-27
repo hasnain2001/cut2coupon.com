@@ -1,17 +1,12 @@
 <!-- ========== Menu ========== -->
 <div class="app-menu text-ellipsis text-capitalize">
     <!-- Brand Logo -->
-    <div class="logo-box text-center py-3">
-        <!-- Light Logo -->
-        <a href="{{ route('employee.dashboard') }}" class="logo-light">
-            <x-application-logo class="logo-lg" alt="Light Logo" />
-            <span class="logo-text">Employee Dashboard</span>
-        </a>
+    <div class="logo-box text-center py-4">
+        <a href="{{ route('employee.dashboard') }}" class="d-flex align-items-center justify-content-center gap-2">
+            <span class="logo-img">
+                <x-application-logo class="logo-lg" alt="Employee Dashboard Logo" />
+            </span>
 
-        <!-- Dark Logo -->
-        <a href="{{ route('employee.dashboard') }}" class="logo-dark">
-            <x-application-logo class="logo-lg" alt="Dark Logo" />
-            <span class="logo-text">Employee Dashboard</span>
         </a>
     </div>
 
@@ -23,7 +18,7 @@
             <li class="menu-item">
                 <a href="{{ route('employee.dashboard') }}" class="menu-link">
                     <span class="menu-icon"><i class="fas fa-tachometer-alt"></i></span>
-                    <span class="menu-text">Dashboard</span>
+                    <span class="menu-text">Employee Dashboard</span>
                     <span class="menu-badge"><span class="badge bg-success rounded-pill">New</span></span>
                 </a>
             </li>

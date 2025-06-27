@@ -8,15 +8,27 @@
 @section('main')
 <div class="container py-5">
     <div class="text-center mb-5">
-        <h1 class="display-5 fw-bold text-dark mb-3">Our Blog</h1>
-        <p class="lead text-muted">Discover the latest insights, tips, and news.</p>
+        <h1 class="display-5 fw-bold text-dark mb-3">@lang('message.Our Blog')</h1>
+        <p class="lead text-muted"> @lang('message.Discover the latest insights, tips, and news.')</p>
     </div>
 
     <div class="row g-4">
         @foreach ($blogs as $blog)
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-3 hover-zoom">
-                <a href="{{ route('blog.detail', ['slug' => $blog->slug, 'lang' => app()->getLocale()]) }}" class="text-decoration-none text-dark">
+
+                    @php
+    $language = $blog->language ? $blog->language->code : 'en'; // Default to 'en' if no language is set
+    $slug = Str::slug($blog->slug);
+
+    // Generate the URL based on whether the language is 'en' or not
+    if ($language === 'en') {
+        $blogurl = route('blog.detail', ['slug' => $slug]);
+    } else {
+        $blogurl = route('blog-details.withLang', ['lang' => $language, 'slug' => $slug]);
+    }
+@endphp
+                <a href="{{ $blogurl}}" class="text-decoration-none text-dark">
                     <div class="position-relative">
                         <img
                             src="{{ $blog->image ? asset('uploads/blogs/' . $blog->image) : asset('front/assets/images/no-image-found.jpg') }}"

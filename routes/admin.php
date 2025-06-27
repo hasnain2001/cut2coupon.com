@@ -7,10 +7,10 @@ use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\BlogController;
 use App\Http\Controllers\admin\CouponController;
 use App\Http\Controllers\admin\DeleteRequestController;
+use App\Http\Controllers\admin\LanguageController;
 use App\Http\Controllers\admin\NetworkController;
 use App\Http\Controllers\admin\SearchController;
 use App\Http\Controllers\admin\SliderController;
-use App\Http\Controllers\admin\languageController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +28,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::get('/user/checkin/{id}', 'show')->name('user.show');
     });
 
-    Route::controller(languageController::class)->prefix('admin')->name('admin.')->group(function () {
+    Route::controller(LanguageController::class)->prefix('admin')->name('admin.')->group(function () {
     Route::get('/languages', 'index')->name('language.index');
     Route::get('/language/create', 'create')->name('language.create');
     Route::post('/language/store', 'store')->name('language.store');
@@ -57,7 +57,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::get('/store/edit/{stores}', 'edit')->name('store.edit');
     Route::put('/store/update/{stores}', 'update')->name('store.update');
     Route::delete('/store/{id}',  'destroy')->name('store.destroy');
-    Route::get('/store/{slug}', 'show')->name('store.show');
+    Route::get('/Stores/{slug}', 'show')->name('store.show');
     Route::get('/store/detail/{name}', 'Store_detail')->name('store.detail');
     Route::delete('/store/deleteSelected', 'deleteSelected')->name('store.deleteSelected');
     });
@@ -72,8 +72,8 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
     });
     Route::controller(CouponController::class)->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/coupon', 'index')->name('coupon.index');
-    Route::get('/coupon/create', 'create')->name('coupon.create');
+    Route::get('/Coupon', 'index')->name('coupon.index');
+    Route::get('/Coupon/Create', 'create')->name('coupon.create');
     Route::post('/coupon/store', 'store')->name('coupon.store');
     Route::get('/coupon/edit/{coupon}', 'edit')->name('coupon.edit');
     Route::put('/coupon/update/{coupon}', 'update')->name('coupon.update');
@@ -83,8 +83,8 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::post('/coupon/deleteSelected', 'deleteSelected')->name('coupon.deleteSelected');
         });
     Route::controller(BlogController::class)->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/blog', 'index')->name('blog.index');
-    Route::get('/blog/create', 'create')->name('blog.create');
+    Route::get('/Blog', 'index')->name('blog.index');
+    Route::get('/Blog/Create', 'create')->name('blog.create');
     Route::post('/blog/store', 'store')->name('blog.store');
     Route::get('/blog/edit/{blog}', 'edit')->name('blog.edit');
     Route::put('/blog/update/{blog}', 'update')->name('blog.update');

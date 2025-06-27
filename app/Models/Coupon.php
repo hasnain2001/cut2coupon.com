@@ -24,13 +24,17 @@ class Coupon extends Model
         'updated_id',
 
     ];
-    
+
     protected $casts = [
         'ending_date' => 'datetime',
     ];
     public function store()
     {
         return $this->belongsTo(Stores::class,);
+    }
+     public function language()
+    {
+        return $this->belongsTo(language::class,);
     }
     public function user()
     {
@@ -40,4 +44,6 @@ class Coupon extends Model
     {
         return $this->belongsTo(User::class, 'updated_id');
     }
+
+
 }

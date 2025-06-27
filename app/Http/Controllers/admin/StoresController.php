@@ -20,7 +20,9 @@ class StoresController extends Controller
     public function index(  )
     {
 
-        $stores = Stores::select('id','slug','name','category_id','user_id','image','created_at','status','network', 'updated_id','updated_at','language_id')->with('user','updatedby','language')->get();
+        $stores = Stores::select('id','slug','name','category_id','user_id','image','created_at','status','network', 'updated_id','updated_at','language_id')->with('user','updatedby','language')
+        ->orderBy('created_at','desc')
+        ->get();
           return view('admin.stores.index', compact('stores', ));
     }
 

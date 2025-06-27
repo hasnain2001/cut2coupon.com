@@ -1,10 +1,8 @@
 @extends('layouts.welcome')
-
 @section('title', 'Imprint')
 @section('description', 'Get in touch with us for any inquiries or support.')
 @section('keywords', 'imprint, support, inquiries')
 @section('author', 'John Doe')
-
 @section('main')
 <div class="container ">
     <div class="row justify-content-center">
@@ -13,11 +11,11 @@
                 <div class="card-header bg-dark text-white text-center rounded-top-4 py-4">
                     <h1 class="h3 mb-0"><i class="fas fa-info-circle me-2"></i>Imprint</h1>
                 </div>
-                <div class="card-body px-4 py-5">
+                <div class="card-body px-4 py-2">
                     <p class="text-muted text-center mb-5">Here you can find our company details and legal information.</p>
 
                     <div class="mb-4">
-                        <h5 class="fw-semibold text-dark"><i class="fas fa-building me-2"></i>Company Name</h5>
+                        <h5 class="fw-semibold text-dark"><i class="fas fa-building me-2"></i></h5>
                         <p class="mb-0">Example Company Ltd.</p>
                     </div>
 

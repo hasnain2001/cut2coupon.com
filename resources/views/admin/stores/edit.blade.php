@@ -193,7 +193,17 @@
                             </div>
                         </div>
                     </div>
-
+     <!-- Full Width Content Editor -->
+                    <div class="card border-primary">
+                        <div class="card-header bg-light">
+                            <h5 class="card-title mb-0">Store Content</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <textarea id="editor" name="content" >{!! $stores->content !!}</textarea>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Form Actions -->
                     <div class="mt-3 text-center">
                         <button type="submit" class="btn btn-primary px-4">

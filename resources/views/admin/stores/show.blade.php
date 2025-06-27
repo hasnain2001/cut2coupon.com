@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 d-flex justify-content-md-end justify-content-start mt-3 mt-md-0">
-                        <a href="{{ route('employee.coupon.create') }}" class="btn btn-primary btn-lg shadow-sm">
+                        <a href="{{ route('admin.coupon.create') }}" class="btn btn-primary btn-lg shadow-sm">
                             <i class="fas fa-plus-circle"></i> Add New Coupon
                         </a>
                     </div>

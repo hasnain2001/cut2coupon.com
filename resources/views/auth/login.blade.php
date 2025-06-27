@@ -1,4 +1,9 @@
-<x-guest-layout>
+@extends('layouts.welcome')
+@section('title','Cut2Coupon | Latest Discount Codes of ' . date('Y') . ' | Best Offers and Deals')
+@section('description', 'Explore our amazing stores and offers. Find the best products and services in one place.')
+@section('keywords', 'stores, offers, products, services')
+@section('author', 'john doe')
+@section('main')
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -68,8 +73,7 @@
         </div>
     </div>
 
-    <!-- Bootstrap Icons (if not already loaded) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 
     <script>
         function togglePasswordVisibility() {
@@ -86,4 +90,4 @@
             }
         }
     </script>
-</x-guest-layout>
+@endsection

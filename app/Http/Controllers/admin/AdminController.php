@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\CheckInOut;
 use App\Models\Coupon;
+use App\Models\language;
 use App\Models\Network;
 use App\Models\Stores;
 use App\Models\User;
@@ -22,7 +23,8 @@ class AdminController extends Controller
         $users = User::all();
         $user =User::where('id', '!=', Auth::id())->get();
         $stores =Stores::all();
-        return view('admin.dashboard',compact('stores','coupons','categories','networks','users','user'));
+        $languge = language ::all();
+        return view('admin.dashboard',compact('stores','coupons','categories','networks','users','user','languge'));
     }
     public function index()
     {

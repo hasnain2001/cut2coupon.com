@@ -1,17 +1,20 @@
 <?php
 
 return [
-    'home' => 'cndkndnk',
-    'sliders' => 'Sliders',
-    'add_slider' => 'Add Slider',
-    'edit_slider' => 'Edit Slider',
-    'slider_list' => 'Slider List',
-    'slider_details' => 'Slider Details',
-    'slider_image' => 'Slider Image',
-    'slider_title' => 'Slider Title',
-    'slider_subtitle' => 'Slider Subtitle',
-    'slider_link' => 'Slider Link',
-    'slider_button_text' => 'Button Text',
-    'status' => 'Status',
-    'sort_order' => 'Sort Order',
+    // cateory page //
+    'Explore Our Categories' => 'Explorez Nos Catégories',
+    'p1' => 'Remplissez le formulaire ci-dessous et nous vous répondrons dès que possible.',
+
+    // store_detail page //
+    'Visit Store' => 'Visiter la Boutique',
+    'Offers' => 'Offres',
+    'Oops! No Coupons Available' => 'Oups ! Aucun coupon disponible',
+    'Dont worry, you can still explore amazing deals from our partnered brands.' => 'Ne vous inquiétez pas, vous pouvez toujours découvrir des offres incroyables de nos marques partenaires.',
+    'Explore Brands' => 'Découvrir les Marques',
+    'Codes' => 'Codes',
+    'Deals' => 'Promotions',
+
+    // blog page //
+    'Our Blog' => 'Notre Blog',
+    'Discover the latest insights, tips, and news.' => 'Découvrez les dernières actualités, conseils et tendances.',
 ];

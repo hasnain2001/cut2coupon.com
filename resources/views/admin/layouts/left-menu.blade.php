@@ -5,13 +5,13 @@
         <!-- Light Logo -->
         <a href="{{ route('admin.dashboard') }}" class="logo-light">
             <x-application-logo alt="logo" class="logo-lg" style="height: 40px;" />
-            <span class="logo-text">Admin Dashboard</span>
+            {{-- <span class="logo-text">Admin Dashboard</span> --}}
         </a>
 
         <!-- Dark Logo -->
         <a href="{{ route('admin.dashboard') }}" class="logo-dark">
            <x-application-logo alt="dark logo" class="logo-lg" style="height: 40px;" />
-           <span class="logo-text">Admin Dashboard</span>
+           {{-- <span class="logo-text">Admin Dashboard</span> --}}
         </a>
     </div>
 
@@ -23,7 +23,7 @@
             <li class="menu-item">
                 <a href="{{ route('admin.dashboard') }}" class="menu-link">
                     <span class="menu-icon"><i class="fas fa-tachometer-alt"></i></span>
-                    <span class="menu-text">Dashboard</span>
+                    <span class="menu-text"> admin Dashboard</span>
                     <span class="menu-badge"><span class="badge bg-success rounded-pill">New</span></span>
                 </a>
             </li>

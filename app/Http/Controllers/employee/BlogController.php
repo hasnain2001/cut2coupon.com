@@ -90,9 +90,23 @@ class BlogController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Blog $blog)
+
+     public function show($name)
     {
-        return view('employee.blog.show', compact('blog'));
+        $slug = Str::slug($name);
+        $title = ucwords(str_replace('-', ' ', $slug));
+        $blog = Blog::where('slug', $title)->first();
+
+        if (!$blog) {
+            return redirect('404');
+        }
+
+        // Get store$store where store_id matches the store's ID
+        $store = Stores::with('user')
+                    ->where('category_id', $blog->category_id)  // Changed from $title to $store->id
+                    ->get();
+
+        return view('employee.blog.show', compact('blog', 'store'));
     }
 
     /**

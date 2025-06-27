@@ -182,7 +182,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="mb-3">
+                                    {{-- <div class="mb-3">
                                         <label class="form-label">Badge Type</label>
                                         <div class="d-flex flex-wrap gap-2">
                                             @foreach (['never expire', 'featured', 'free shipping', 'coupon code', 'top deals', 'valentine'] as $auth)
@@ -196,7 +196,7 @@
                                                 </div>
                                             @endforeach
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>

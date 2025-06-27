@@ -66,17 +66,16 @@
                                         <small class="text-muted">This will be used in the URL for this category.</small>
                                         <div class="invalid-feedback">Please provide a valid slug.</div>
                                     </div>
-                     <div class="mb-3">
-                                        <label for="language" class="form-label">Language <span class="text-danger">*</span></label>
-                                        <select name="language_id" id="language" class="form-select">
+      <div class="mb-3">
+                                        <label for="language_id" class="form-label">Language <span class="text-danger">*</span></label>
+                                        <select name="language_id" id="language_id" class="form-select" required>
                                             <option value="" disabled>-- Select Language --</option>
                                             @foreach ($languages as $language)
-                                                <option value="{{ $language->code }}" {{ old('language', $category->language) == $language->code ? 'selected' : '' }}>
+                                                <option value="{{ $language->id }}" {{ old('language_id', $category->language_id) == $language->id ? 'selected' : '' }}>
                                                     {{ $language->name }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <div class="form-text">Select the language for this store. This will help in categorizing and displaying the store correctly based on user preferences.</div>
                                     </div>
                                 </div>
                             </div>
@@ -134,6 +133,21 @@
                                             </label>
                                         </div>
                                     </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Featured category <span class="text-danger">*</span></label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="top_category" id="not_top_category" value="0" {{ old('top_category', $category->top_category) == 0 ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="not_top_category">
+                                                    Regular
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="top_category" id="top_category" value="1" {{ old('top_category', $category->top_category) == 1 ? 'checked' : '' }}>
+                                                <label class="form-check-label text-warning" for="top_category">
+                                                    <i class="mdi mdi-star-outline"></i> Featured
+                                                </label>
+                                            </div>
+                                        </div>
 
                                     <div class="mb-3">
                                         <label for="image" class="form-label">Category Image</label>

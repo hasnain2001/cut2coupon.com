@@ -127,7 +127,21 @@
                                             </label>
                                         </div>
                                     </div>
-
+                                   <div class="col-md-6">
+                                            <label class="form-label">Featured category <span class="text-danger">*</span></label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="top_category" id="not_top_category" value="0" checked>
+                                                <label class="form-check-label" for="not_top_category">
+                                                    Regular
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="top_category" id="top_category" value="1">
+                                                <label class="form-check-label text-warning" for="top_category">
+                                                    <i class="mdi mdi-star-outline"></i> Featured
+                                                </label>
+                                            </div>
+                                        </div>
                                     <div class="mb-3">
                                         <label for="image" class="form-label">Category Image</label>
                                         <input type="file" name="image" id="image" class="form-control"

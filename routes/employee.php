@@ -11,7 +11,7 @@ use App\Http\Controllers\employee\StoresController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
 
-Route::middleware(['auth', 'role:employee'])->group(function () {
+Route::middleware(['auth','role:employee'])->group(function () {
 
 
     Route::controller(EmployeeController::class)->prefix('employee')->name('employee.')->group(function () {
@@ -21,7 +21,7 @@ Route::middleware(['auth', 'role:employee'])->group(function () {
 
     Route::controller(CategoryController::class)->prefix('employee')->name('employee.')->group(function () {
         Route::get('/categories', 'index')->name('category.index');
-        Route::get('/category/create', 'create')->name('category.create');
+        Route::get('/Category/Create', 'create')->name('category.create');
         Route::post('/category/store', 'store')->name('category.store');
         Route::get('/category/edit/{category}', 'edit')->name('category.edit');
         Route::put('/category/update/{category}', 'update')->name('category.update');
@@ -53,7 +53,7 @@ Route::middleware(['auth', 'role:employee'])->group(function () {
 
         });
         Route::controller(CouponController::class)->prefix('employee')->name('employee.')->group(function () {
-        Route::get('/coupon', 'index')->name('coupon.index');
+        Route::get('/Coupon', 'index')->name('coupon.index');
         Route::get('/Coupon/Create', 'create')->name('coupon.create');
         Route::post('/coupon/store', 'store')->name('coupon.store');
         Route::get('/coupon/edit/{coupon}', 'edit')->name('coupon.edit');
@@ -73,15 +73,15 @@ Route::middleware(['auth', 'role:employee'])->group(function () {
 
         });
 
-        Route::controller(BlogController::class)->prefix('employee/blogs')->name('employee.')->group(function () {
+        Route::controller(BlogController::class)->prefix('employee')->name('employee.')->group(function () {
             Route::get('/blogs', 'index')->name('blog.index');
             Route::get('/create', 'create')->name('blog.create');
             Route::post('/store', 'store')->name('blog.store');
             Route::get('/edit/{blog}', 'edit')->name('blog.edit');
             Route::put('/update/{blog}', 'update')->name('blog.update');
             Route::delete('/delete/{blog}',  'destroy')->name('blog.destroy');
-            Route::get('/{blog:slug}', 'show')->name('blog.show');
-            Route::post('/deleteSelected', 'deleteSelected')->name('blog.deleteSelected');
+            Route::get('/Blogs/{slug}', 'show')->name('blog.show');
+             Route::post('/deleteSelected', 'deleteSelected')->name('blog.deleteSelected');
             });
 
 });

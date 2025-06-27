@@ -6,225 +6,8 @@
 @section('author', 'john doe')
 
 @push('styles')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
 <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
-<style>
-:root {
-    --imperial-blue: #00539C;
-    --dark-blue: #002147;
-    --white: #FFFFFF;
-}
-
-.btn-code, .btn-deal, .btn-welcome {
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transform: translateY(0);
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-}
-
-/* Code Button */
-.btn-code {
-    background-color: var(--imperial-blue);
-    border: 2px dotted var(--dark-blue);
-    color: white;
-}
-
-.btn-code:hover {
-    background-color: var(--dark-blue);
-    border-color: var(--imperial-blue);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    animation: pulse 1.5s infinite;
-}
-
-/* Deal Button */
-.btn-deal {
-    background-color: var(--imperial-blue);
-    color: white;
-    border: 2px dotted var(--imperial-blue);
-}
-
-.btn-deal:hover {
-    background-color: var(--imperial-blue);
-    color: white;
-    border-color: var(--dark-blue);
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 83, 156, 0.3);
-}
-
-.btn-deal::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: rgba(255, 255, 255, 0.1);
-    transform: rotate(45deg);
-    transition: all 0.6s ease;
-    pointer-events: none;
-}
-
-.btn-deal:hover::before {
-    left: 100%;
-}
-
-/* Welcome Button */
-.btn-welcome {
-    background-color: var(--imperial-blue);
-    color: var(--white);
-    border: none;
-}
-
-.btn-welcome:hover {
-    background-color: var(--dark-blue);
-    color: var(--white);
-    animation: bounce 0.5s;
-}
-
-/* Animations */
-@keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(0, 83, 156, 0.7);
-    }
-    70% {
-        box-shadow: 0 0 0 10px rgba(0, 83, 156, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(0, 83, 156, 0);
-    }
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-10px);
-    }
-    60% {
-        transform: translateY(-5px);
-    }
-}
-
-/* Ripple Effect */
-.btn-code:after, .btn-deal:after, .btn-welcome:after {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
-    background-repeat: no-repeat;
-    background-position: 50%;
-    transform: scale(10, 10);
-    opacity: 0;
-    transition: transform .5s, opacity 1s;
-}
-
-.btn-code:active:after, .btn-deal:active:after, .btn-welcome:active:after {
-    transform: scale(0, 0);
-    opacity: .3;
-    transition: 0s;
-}
-
-    .blog-section {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .blog-card {
-        border-radius: 12px;
-        transition: all 0.3s ease;
-    }
-
-    .blog-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .transition-scale {
-        transition: transform 0.5s ease;
-    }
-
-    .blog-card:hover .transition-scale {
-        transform: scale(1.05);
-    }
-
-    .blog-slider {
-        padding-bottom: 40px;
-    }
-
-    .swiper-button-prev, .swiper-button-next {
-        width: 40px;
-        height: 40px;
-        background: white;
-        border-radius: 50%;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        color: #333;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 10;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .swiper-button-prev {
-        left: 10px;
-    }
-
-    .swiper-button-next {
-        right: 10px;
-    }
-
-    .swiper-button-prev:hover, .swiper-button-next:hover {
-        background: #4e73df;
-        color: white;
-    }
-
-    .object-cover {
-        object-fit: cover;
-    }
-
-    .blog-share:hover {
-        background: #4e73df;
-        color: white;
-    }
-
-    .blog-bookmark:hover {
-        background: #e74a3b;
-        color: white;
-    }
-
-    @media (max-width: 768px) {
-        .swiper-button-prev, .swiper-button-next {
-            display: none;
-        }
-    }
-    hr {
-        border: dotted 2px #4e73df;
-        height: 1px;
-    }
-</style>
 @endpush
-
-
 @section('main')
 <!-- Hero Slider Section -->
 <section class="hero-slider" >
@@ -255,10 +38,10 @@
 <!-- Stores Section -->
 <section class="stores-section ">
     <div class="container">
-        <div class="text-center mb-10">
-            <h2 class="section-title display-6 fw-bold">Our Featured Stores</h2>
+        <div class="text-center mb-8">
+            <h1 class="section-title display-6 fw-bold">@lang('welcome.H1')</h1>
             <p class="section-subtitle lead text-muted">
-                Discover our beautifully curated stores offering the best products and services
+        @lang('welcome.p1')
             </p>
         </div>
 
@@ -274,7 +57,7 @@
                         <div class="store-image-container">
                              <a href="{{ $storeUrl }}" class="text-decoration-none text-dark ">
                             <img src="{{ $store->image ? asset('uploads/stores/' . $store->image) : asset('front/assets/images/no-image-found.jpg') }}"
-                                 class="store-image"
+                                 class="store-image rounded-circle "
                                  alt="{{ $store->name }}"
                                  loading="lazy"
                                  onerror="this.src='{{ asset('assets/images/no-image-found.png') }}'">
@@ -303,8 +86,8 @@
 <section class="featured-coupons  bg-gradient-to-r from-purple-50 to-blue-50">
     <div class="container">
         <div class="text-center mb-5">
-            <h3 class="section-title fw-bold display-7">Latest Discount & Promo Codes</h3>
-            <p class="lead text-muted">Grab the best deals and discounts from our top stores</p>
+            <h2 class="section-title fw-bold display-7">@lang('welcome.H2')</h2>
+            <p class="lead text-muted">@lang('welcome.p2')</p>
         </div>
 
         <div class="row g-4 justify-content-center">
@@ -312,36 +95,43 @@
             <div class="col-md-6 col-lg-3">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="text-center p-4 border-bottom">
+                        <a href="{{  route('store.detail', ['slug' => Str::slug($coupon->store->slug)]) }}">
                         <img src="{{ $coupon->store->image ? asset('uploads/stores/' . $coupon->store->image) : asset('front/assets/images/no-image-found.jpg') }}"
                              alt="{{ $coupon->store->name }}"
                              class="img-fluid mb-2"
-                             style="height: 100px; object-fit: contain"
-                             loading="lazy"
+                             style="height: 100px; object-fit: contain"                       loading="lazy"
                              onerror="this.src='{{ asset('assets/images/no-image-found.png') }}'">
+                        </a>
                     </div>
 
                     <div class="card-body">
                         <div class="mb-2">
-                            <span class="badge bg-success rounded-pill"><i class="fas fa-check-circle me-1"></i> Verified</span>
+                            <span class="badge bg-success rounded-pill"><i class="fas fa-check-circle me-1"></i> @lang('welcome.Verified')</span>
                         </div>
-                        <h6 class="mb-1 fw-semibold">{{ $coupon->store->name }}</h6>
-                        <p class="text-muted small mb-2">{{ $coupon->name }}</p>
-
+                       <small class="text-muted small mb-2">{{ $coupon->store->name }}</small>
+                        <h6 class="mb-1 fw-semibold">{{ $coupon->name }}</h6>
+                        <p >{{$coupon->description}}</p>
                         <ul class="list-unstyled text-muted small mb-3">
-                            <li><i class="far fa-calendar-alt me-1"></i> {{ \Carbon\Carbon::parse($coupon->created_at)->format('d M Y') }}</li>
+                        <li>
+                            <i class="far fa-calendar-alt me-1"></i>
+                            <span class="{{ \Carbon\Carbon::parse($coupon->ending_date)->isPast() ? 'text-danger' : 'text-success' }}">
+                                {{ \Carbon\Carbon::parse($coupon->ending_date)->isPast() ? 'Expired ' : '' }}
+                                {{ \Carbon\Carbon::parse($coupon->ending_date)->format('d M Y') }}
+                            </span>
+                        </li>
                             <li><i class="fas fa-user me-1"></i> {{ $coupon->clicks ?? 0 }} People Used</li>
                         </ul>
 
                         @if ($coupon->code)
                             <button class=" btn-code w-100 reveal-code"
                                 onclick="handleRevealCode(event, {{ $coupon->id }}, '{{ $coupon->code }}', '{{ $coupon->name }}', '{{ asset('uploads/stores/' . $coupon->store->image) }}', '{{ $coupon->store->destination_url }}', '{{ $coupon->store->name }}')">
-                                <i class="fas fa-ticket-alt me-2"></i> Get Code
+                                <i class="fas fa-ticket-alt me-2"></i>@lang('welcome.Get Code')
                             </button>
                         @else
                             <a href="{{ $coupon->store->destination_url }}" target="_blank"
                                 class=" btn-deal w-100"
                                 onclick="updateClickCount({{ $coupon->id }})">
-                                <i class="fas fa-shopping-bag me-2"></i> View Deal
+                                <i class="fas fa-shopping-bag me-2"></i> @lang('welcome.View Deal')
                             </a>
                         @endif
                     </div>
@@ -353,7 +143,7 @@
         @if($couponscode->count() > 0)
         <div class="text-center mt-5">
             <a href="{{ route('coupons.index') }}" class=" btn-welcome px-4 py-2">
-                View All Coupons <i class="fas fa-arrow-right ms-2"></i>
+                @lang('welcome.View All Coupons') <i class="fas fa-arrow-right ms-2"></i>
             </a>
         </div>
         @endif
@@ -364,8 +154,8 @@
 <section class="featured-coupons  bg-gradient-to-r from-purple-50 to-blue-50">
     <div class="container">
         <div class="text-center mb-5">
-            <h3 class="section-title fw-bold display-7">Latest Discount & Promo Codes</h3>
-            <p class="lead text-muted">Grab the best deals and discounts from our top stores</p>
+            <h3 class="section-title fw-bold display-7">@lang('welcome.H3') </h3>
+            <p class="lead text-muted">@lang('welcome.p2')</p>
         </div>
 
         <div class="row g-4 justify-content-center">
@@ -373,36 +163,45 @@
             <div class="col-md-6 col-lg-3">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="text-center p-4 border-bottom">
+                         <a href="{{  route('store.detail', ['slug' => Str::slug($coupon->store->slug)]) }}">
                         <img src="{{ $coupon->store->image ? asset('uploads/stores/' . $coupon->store->image) : asset('front/assets/images/no-image-found.jpg') }}"
                              alt="{{ $coupon->store->name }}"
                              class="img-fluid mb-2"
                              style="height: 100px; object-fit: contain"
                              loading="lazy"
                              onerror="this.src='{{ asset('assets/images/no-image-found.png') }}'">
+                         </a>
                     </div>
 
                     <div class="card-body">
                         <div class="mb-2">
-                            <span class="badge bg-success rounded-pill"><i class="fas fa-check-circle me-1"></i> Verified</span>
+                            <span class="badge bg-success rounded-pill"><i class="fas fa-check-circle me-1"></i>@lang('welcome.Verified')</span>
                         </div>
-                        <h6 class="mb-1 fw-semibold">{{ $coupon->store->name }}</h6>
-                        <p class="text-muted small mb-2">{{ $coupon->name }}</p>
+                        <small class="text-muted small mb-2">{{ $coupon->store->name }}</small>
+                        <h6 class="mb-1 fw-semibold">{{ $coupon->name }}</h6>
+                        <p >{{$coupon->description}}</p>
 
                         <ul class="list-unstyled text-muted small mb-3">
-                            <li><i class="far fa-calendar-alt me-1"></i> {{ \Carbon\Carbon::parse($coupon->created_at)->format('d M Y') }}</li>
+                        <li>
+                            <i class="far fa-calendar-alt me-1"></i>
+                            <span class="{{ \Carbon\Carbon::parse($coupon->ending_date)->isPast() ? 'text-danger' : 'text-success' }}">
+                                {{ \Carbon\Carbon::parse($coupon->ending_date)->isPast() ? 'Expired ' : '' }}
+                                {{ \Carbon\Carbon::parse($coupon->ending_date)->format('d M Y') }}
+                            </span>
+                        </li>
                             <li><i class="fas fa-user me-1"></i> {{ $coupon->clicks ?? 0 }} People Used</li>
                         </ul>
 
                           @if ($coupon->code)
                             <button class=" btn-code w-100 reveal-code"
                                 onclick="handleRevealCode(event, {{ $coupon->id }}, '{{ $coupon->code }}', '{{ $coupon->name }}', '{{ asset('uploads/stores/' . $coupon->store->image) }}', '{{ $coupon->store->destination_url }}', '{{ $coupon->store->name }}')">
-                                <i class="fas fa-ticket-alt me-2"></i> Get Code
+                                <i class="fas fa-ticket-alt me-2"></i> @lang('welcome.Get Code')
                             </button>
                         @else
                             <a href="{{ $coupon->store->destination_url }}" target="_blank"
                                 class=" btn-deal w-100"
                                 onclick="updateClickCount({{ $coupon->id }})">
-                                <i class="fas fa-shopping-bag me-2"></i> View Deal
+                                <i class="fas fa-shopping-bag me-2"></i> @lang('welcome.View Deal')
                             </a>
                         @endif
                     </div>
@@ -411,10 +210,10 @@
             @endforeach
         </div>
 
-        @if($couponscode->count() > 0)
+        @if($couponsdeal->count() > 0)
         <div class="text-center mt-5">
             <a href="{{ route('coupons.index') }}" class=" btn-welcome px-4 py-2">
-                View All Coupons <i class="fas fa-arrow-right ms-2"></i>
+               @lang('welcome.View All Coupons') <i class="fas fa-arrow-right ms-2"></i>
             </a>
         </div>
         @endif
@@ -425,7 +224,7 @@
 <section class="py-2 border-dotted">
     <div class="container border-dotted ">
         <div class="text-center mb-5">
-            <h2 class="fw-bold text-dark">Most Visited Categories</h2>
+            <h4 class="fw-bold text-dark display-6">@lang('welcome.H4')</h4>
         </div>
 
         <div class="row justify-content-center g-2">
@@ -455,7 +254,7 @@
         @if($categories->count() > 0)
             <div class="text-center mt-5">
                 <a href="{{ route('category', ['lang' => app()->getLocale()]) }}" class=" btn-welcome px-4 py-2 shadow-sm">
-                    View All Categories <i class="fas fa-arrow-right ms-2"></i>
+                @lang('welcome.View All Categories')<i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </div>
         @endif
@@ -466,9 +265,9 @@
     <div class="container">
         <div class="text-center mb-5">
             <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 mb-3 d-inline-flex align-items-center">
-                <i class="fas fa-newspaper me-2"></i>Latest Updates
+                <i class="fas fa-newspaper me-2"></i>@lang('welcome.sp')
             </span>
-            <h3 class="fw-bold  mb-2">Discover Our Latest Blogs</h3>
+            <h5 class="fw-bold mb-2 display-6">@lang('welcome.H5')</h5>
               </div>
 
         <div class="position-relative">
@@ -500,10 +299,8 @@
                                     </small>
                                 </div>
 
-                                <h5 class="card-title fw-bold mb-3">{{ $blog->name }}</h5>
-                                <p class="card-text text-muted mb-4">{{ Str::limit(strip_tags($blog->description), 120) }}</p>
-
-                                <div class="d-flex align-items-center justify-content-between">
+                                <h6 class="card-title fw-bold mb-3 nowrap">{{ $blog->name }}</h6>
+                               <div class="d-flex align-items-center justify-content-between">
                                     <a href="{{ route('blog.detail', ['slug' => Str::slug($blog->slug)]) }}" class="btn btn-link text-primary p-0 text-decoration-none d-flex align-items-center">
                                         Read More <i class="fas fa-arrow-right ms-2"></i>
                                     </a>
@@ -589,11 +386,6 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/welcom.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Include Swiper JS -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize Swiper

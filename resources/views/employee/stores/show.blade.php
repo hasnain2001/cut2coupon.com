@@ -36,6 +36,7 @@
                                     <span class="badge bg-warning text-dark">
                                         <i class="fas fa-language"></i> {{ $store->language->name ?? 'N/A' }}
                                     </span>
+
                                 </div>
                             </div>
                         </div>
@@ -51,6 +52,11 @@
 
         <section class="content">
             <div class="container-fluid">
+                <span class="badge bg-gradient bg-warning text-dark shadow-sm fs-6 px-3 py-2 d-inline-flex align-items-center">
+                    <i class="fas fa-ticket-alt me-1"></i>
+                    <span class="fw-bold">Coupons:</span>
+                    <span class="ms-1">{{ $coupons->count() ?? 'N/A' }}</span>
+                </span>
                 @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
                     <i class="fas fa-check-circle fa-2x me-3"></i>

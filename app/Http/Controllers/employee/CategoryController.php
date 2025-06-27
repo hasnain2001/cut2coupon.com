@@ -62,7 +62,7 @@ class CategoryController extends Controller
 
         $category = new Category();
         $category->user_id = Auth::id();
-        $category->language_id = $request->laguage_id;
+        $category->language_id = $request->language_id;
          $category->name = $request->name;
         $category->slug = $request->slug;
         $category->top_category = $request->top_category;
