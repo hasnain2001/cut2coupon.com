@@ -13,4 +13,5 @@ return [
     'Verified' => 'Vérifié',
     'View All Coupons' => 'Voir tous les coupons',
      'View All Categories' => 'Afficher toutes les catégories',
+      'View All Articles' => 'Voir tous les articles'
 ];

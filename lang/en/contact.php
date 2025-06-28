@@ -1,7 +1,7 @@
 <?php
 return [
     // contact page //
-'h1'=> 'Explore Our Categories',
+'h1'=> 'contact us',
 'p1' =>'Discover a wide range of products organized for your convenience',
 'Name' => 'Name',
 'Email' => 'Email',

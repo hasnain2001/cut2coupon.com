@@ -21,12 +21,12 @@
 
                     <div class="mb-4">
                         <h5 class="fw-semibold text-dark"><i class="fas fa-map-marker-alt me-2"></i>Address</h5>
-                        <p class="mb-0">123 Example Street, City, Country, 12345</p>
+                        <p class="mb-0">3000 Hoffman Dr, Plano, Tx USA</p>
                     </div>
 
                     <div class="mb-4">
                         <h5 class="fw-semibold text-dark"><i class="fas fa-envelope me-2"></i>Contact Information</h5>
-                        <p class="mb-1">Email: <a href="mailto:example@example.com" class="text-decoration-none">example@example.com</a></p>
+                        <p class="mb-1">Email: <a href="mailto:contactcut2coupon@gmail.com" class="text-decoration-none">contactcut2coupon@gmail.com</a></p>
                         <p class="mb-0">Phone: +123 456 7890</p>
                     </div>
 

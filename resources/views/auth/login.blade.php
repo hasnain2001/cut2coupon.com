@@ -6,7 +6,6 @@
 @section('main')
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%;">
             <div class="card-body">

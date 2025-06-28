@@ -53,7 +53,7 @@
                 <ul class="list-unstyled text-white-50">
                     <li class="mb-2 d-flex align-items-center">
                         <i class="fas fa-map-marker-alt me-2 text-white"></i>
-                        123 Street, City, Country
+                       3000 Hoffman Dr, Plano, Tx USA
                     </li>
                     <li class="mb-2 d-flex align-items-center">
                         <i class="fas fa-phone-alt me-2 text-white"></i>
@@ -61,7 +61,7 @@
                     </li>
                     <li class="mb-2 d-flex align-items-center">
                         <i class="fas fa-envelope me-2 text-white"></i>
-                        info@example.com
+                       cut2coupon@gmail.com
                     </li>
                 </ul>
             </div>

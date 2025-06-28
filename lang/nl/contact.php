@@ -1,15 +1,15 @@
 <?php
 return [
     // contact page //
-'h1'=> 'Explore Our Categories',
-'p1' =>'Discover a wide range of products organized for your convenience',
-'Name' => 'Name',
-'Email' => 'Email',
-'Message' => 'Message',
-'Send Message' => 'Send Message',
-'Our Location' => 'Our Location',
-'Call Us'=>'Call Us',
-'email us' => 'email us',
-'Your name' => 'Your name',
-'Your message here' => 'Your message here',
+    'h1' => 'Ontdek onze categorieën',
+    'p1' => 'Ontdek een breed assortiment producten, overzichtelijk voor u ingedeeld',
+    'Name' => 'Naam',
+    'Email' => 'E-mail',
+    'Message' => 'Bericht',
+    'Send Message' => 'Bericht versturen',
+    'Our Location' => 'Onze locatie',
+    'Call Us' => 'Bel ons',
+    'email us' => 'E-mail ons',
+    'Your name' => 'Uw naam',
+    'Your message here' => 'Uw bericht hier'
 ];

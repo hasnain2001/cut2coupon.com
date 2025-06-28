@@ -1,25 +1,26 @@
 <?php
- return [
+return [
     // nav //
-    'home' => 'Home',
-    'contact' => 'Contact Us',
-    'blogs' => 'blogs',
-    'stores' =>'stores',
-    'cateories' => 'cateories',
-    'Popular-Categories' =>'Popular Categories',
-    'Featured' => 'Featured',
-    'New-Arrivals' => 'New Arrivals',
-    'Special-Offers' => 'Special Offers',
+    'home' => 'thuis',
+    'contact' => 'Contact',
+    'blogs' => 'Blogs',
+    'stores' => 'Winkels',
+    'cateories' => 'Categorieën',
+    'Popular-Categories' => 'Populaire Categorieën',
+    'Featured' => 'Uitgelicht',
+    'New-Arrivals' => 'Nieuwe Aanwinsten',
+    'Special-Offers' => 'Speciale Aanbiedingen',
     'Dashboard' => 'Dashboard',
-    'Login' => 'Login',
-    //footer//
-   'Info Links'=> 'Info Links',
-    'about'=> 'about',
-    'Privacy Policy'=>'Privacy Policy',
-    'Terms of Service' => 'Terms of Service',
-    'Imprint' => "Imprint",
-    'Quick Links' => 'Quick Links',
+    'Login' => 'Inloggen',
+
+    // footer //
+    'Info Links' => 'Informatie',
+    'about' => 'Over ons',
+    'Privacy Policy' => 'Privacybeleid',
+    'Terms of Service' => 'Servicevoorwaarden',
+    'Imprint' => 'Impressum',
+    'Quick Links' => 'Snelle Links',
     'Coupons' => 'Coupons',
-    'Company Name. All rights reserved' => 'Company Name. All rights reserved',
-    'Search here' => 'Search here'
-  ];
+    'Company Name. All rights reserved' => 'Bedrijfsnaam. Alle rechten voorbehouden',
+    'Search here' => 'Zoek hier'
+];

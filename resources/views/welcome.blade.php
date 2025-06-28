@@ -16,7 +16,7 @@
             <div class="swiper-wrapper">
                 @foreach ($sliders as $slider)
                 <div class="swiper-slide hero-slide">
-                    <a href="{{ $slider->link }}" class="block h-full">
+                    <a href="{{ $slider->link }}" target="_blank" class="block h-full">
                         <img src="{{ $slider->image ? asset('uploads/slider/' . $slider->image) : asset('front/assets/images/no-image-found.jpg') }}"
                              alt="{{ $slider->title }}"
                              loading="lazy">
@@ -326,7 +326,7 @@
 
         <div class="text-center mt-4">
             <a href="{{ route('blog', ['lang' => app()->getLocale()]) }}" class="btn-welcome px-4 py-2">
-                <i class="fas fa-book-open me-2"></i>View All Articles
+                <i class="fas fa-book-open me-2"></i>@lang('welcome.View All Articles')
             </a>
         </div>
     </div>

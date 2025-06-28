@@ -13,4 +13,5 @@ return [
   'Verified' =>'Verified',
   'View All Coupons' => 'View All Coupons',
    'View All Categories' => 'View All Categories',
+   'View All Articles' => 'View All Articles'
 ];

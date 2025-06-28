@@ -62,7 +62,7 @@ Route::get('/register', function () {return view('auth.register');})->middleware
         Route::post('/update-clicks', 'updateClicks')->name('update.clicks');
         Route::get('/clicks/{couponId}',  'openCoupon')->name('open.coupon');
      });
-     Route::get('/Generate-sitemap', [SitemapController::class, 'generate']);
+     Route::get('/generate-sitemap', [SitemapController::class, 'generate']);
     Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 

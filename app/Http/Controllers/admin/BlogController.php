@@ -117,7 +117,8 @@ class BlogController extends Controller
         ]);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $storeNameSlug = Str::slug($request->name);
+            $imageName = $storeNameSlug . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('uploads/blogs'), $imageName);
         } else {
             $imageName = $blog->image;
